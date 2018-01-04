@@ -22,7 +22,7 @@ public class ProductRequst extends Request {
     }
 
     @Override
-    public String StitchingRequest() {
+    public String stitchingRequest() {
         return super.getPublicUrl();
 //        return super.getPublicUrl() + String.format(urlFormat, page, stockSku, updateTimeStart+"", updateTimeEnd+"");
     }

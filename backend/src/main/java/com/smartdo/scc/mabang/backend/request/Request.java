@@ -22,5 +22,5 @@ public abstract class Request {
         return this.url + String.format("?version=%s&timestamp=%s&developerId=%s&authToken=%s&action=%s", version, timestemp + "", developerId, authToken, action);
     }
 
-    public abstract String StitchingRequest();
+    public abstract String stitchingRequest();
 }

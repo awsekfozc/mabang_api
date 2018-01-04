@@ -22,6 +22,7 @@ public final class MabangAPI {
 
     public MabangAPI setPipeline(Pipeline pipeline) {
         this.pipeline = pipeline;
+
         return this;
     }
 
@@ -31,7 +32,7 @@ public final class MabangAPI {
 
     public void start() {
         try {
-            String requestUrl = request.StitchingRequest();
+            String requestUrl = request.stitchingRequest();
             System.out.println("请求url:" + requestUrl);
             HttpResult result = service.doGet(requestUrl);
             System.out.println(result);
