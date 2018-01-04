@@ -24,4 +24,6 @@ public class HttpResult {
         this.code = code;
         this.body = body;
     }
+
+
 }

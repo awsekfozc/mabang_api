@@ -4,6 +4,8 @@ import lombok.Data;
 
 /**
  * 商品实体
+ * 接口方法 get-stock-info-data
+
  */
 @Data
 public class Product {

@@ -48,6 +48,7 @@ public class HttpAPIService {
         // 判断状态码是否为200
         return new HttpResult(response.getStatusLine().getStatusCode(), EntityUtils.toString(
                 response.getEntity(), "UTF-8"));
+
     }
 
     /**
