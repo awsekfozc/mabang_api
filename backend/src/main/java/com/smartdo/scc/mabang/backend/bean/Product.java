@@ -1,6 +1,7 @@
 package com.smartdo.scc.mabang.backend.bean;
 
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * 商品实体
@@ -8,6 +9,7 @@ import lombok.Data;
 
  */
 @Data
+@ToString
 public class Product {
 
     //商品编号

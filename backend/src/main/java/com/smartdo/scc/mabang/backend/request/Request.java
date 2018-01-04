@@ -1,7 +1,10 @@
 package com.smartdo.scc.mabang.backend.request;
 
 import com.smartdo.scc.mabang.common.helper.DateUtils;
+import com.smartdo.scc.mabang.common.helper.HttpResult;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
 
@@ -13,6 +16,9 @@ public abstract class Request {
     protected String action;
     protected String url = "http://api-private.wms.mabangerp.com";
     protected long timestemp = System.currentTimeMillis() / 1000L;
+    @Setter
+    @Getter
+    private HttpResult result;
 
     public Request(String action) {
         this.action = action;
