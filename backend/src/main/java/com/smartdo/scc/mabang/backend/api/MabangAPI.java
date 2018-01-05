@@ -1,28 +1,25 @@
-package com.smartdo.scc.mabang.backend;
+package com.smartdo.scc.mabang.backend.api;
 
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.smartdo.scc.mabang.backend.bean.Product;
 import com.smartdo.scc.mabang.backend.factory.ResponseFactory;
 import com.smartdo.scc.mabang.backend.pipe.Pipeline;
 import com.smartdo.scc.mabang.backend.pipe.ProductPipeline;
 import com.smartdo.scc.mabang.backend.request.ProductRequst;
 import com.smartdo.scc.mabang.backend.request.Request;
 import com.smartdo.scc.mabang.backend.response.Response;
-import com.smartdo.scc.mabang.backend.response.StockResponse;
-import com.smartdo.scc.mabang.common.helper.BeanUtil;
 import com.smartdo.scc.mabang.common.helper.HttpAPIService;
-import com.smartdo.scc.mabang.common.helper.HttpResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+@RestController
+@RequestMapping("sellerInfo/setting")
 public final class MabangAPI {
 
+
+
     private Request request;
+
+
     private Pipeline pipeline;
     private Response response;
     private HttpAPIService service = new HttpAPIService();
@@ -38,8 +35,10 @@ public final class MabangAPI {
     }
 
     public static MabangAPI create(Request request) {
+
         return new MabangAPI(request);
     }
+
 
     public void start() {
         try {
@@ -47,9 +46,18 @@ public final class MabangAPI {
             System.out.println("请求url:" + requestUrl);
             request.setResult(service.doGet(requestUrl));
             response = ResponseFactory.getResponse(request);
+            pipeline.save(response);
         } catch (Exception ex) {
+            ex.printStackTrace();
 
         }
+    }
+
+    public  void startTest(){
+        ProductRequst request = new ProductRequst();
+        MabangAPI.create(request)
+                .setPipeline(new ProductPipeline())
+                .start();
     }
 
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smartdo.scc.mabang.backend.UserMapper">
+    <select id="GetUserByID" parameterType="int" resultType="User">
+        select * from `user` where id = #{id}
+    </select>
+
+    <insert id="add" parameterType="com.smartdo.scc.mabang.backend.bean.User">
+        INSERT INTO user
+        (id,
+        name,
+        dept,
+        website,
+        phone
+        )
+        VALUES
+        (
+        #{id},
+        #{name},
+        #{dept},
+        #{website},
+        #{phone}
+        )
+    </insert>
+</mapper>

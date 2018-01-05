@@ -1,14 +1,9 @@
 package com.smartdo.scc.mabang.backend.bean;
 
 import lombok.Data;
-/**
- * 商品实体
- * 接口方法 get-stock-warehouse-info-data
- *1.2 获取商品仓库信息
- */
+
 @Data
 public class StockWarehouseInfoData {
-
     private String stockId;
     private String warehouseId;
     private String gridcode;
@@ -17,5 +12,19 @@ public class StockWarehouseInfoData {
     private String stockCost;
     private String isDefault;
     private String warehouseType;
+
+    public StockWarehouseInfoData() {
+    }
+    public StockWarehouseInfoData(String stockId, String warehouseId, String gridcode, String stockQuantity, String status, String stockCost, String isDefault, String warehouseType) {
+        this.stockId = stockId;
+        this.warehouseId = warehouseId;
+        this.gridcode = gridcode;
+        this.stockQuantity = stockQuantity;
+        this.status = status;
+        this.stockCost = stockCost;
+        this.isDefault = isDefault;
+        this.warehouseType = warehouseType;
+    }
+
 
 }

@@ -9,8 +9,8 @@ import com.smartdo.scc.mabang.common.helper.HttpResult;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 商品响应类
@@ -19,15 +19,12 @@ import java.util.Map;
 public class ProductResponse extends Response {
 
     @Getter
-    private List<Product> productList = null;
+    private List<Product> productList = new ArrayList<>();
 
 
     public ProductResponse(HttpResult result) {
         super(result);
         setBeans();
-        productList.forEach(product -> {
-            System.out.println(product);
-        });
     }
 
 
@@ -41,10 +38,10 @@ public class ProductResponse extends Response {
             this.setPageCount(object.getInteger("pageCount"));
             this.setCode(object.getString("code"));
             JSONArray array = object.getJSONArray("data");
-            array.forEach(product -> {
-                //TODO
+            System.out.print("444444444444");
+            for(Object product:array){
                 productList.add(JSON.parseObject(JSON.toJSONString(product), Product.class));
-            });
+            }
         } else {
             System.out.println("请求出错" + result.getCode());
         }
