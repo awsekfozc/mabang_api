@@ -27,7 +27,5 @@
     </environments>
 
     <mappers>
-        <mapper resource="com/smartdo/scc/mabang/backend/bean/User.xml"/>
-        <mapper resource="com/smartdo/scc/mabang/backend/bean/Product.xml"/>
     </mappers>
 </configuration>
