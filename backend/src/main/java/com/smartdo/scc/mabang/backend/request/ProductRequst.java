@@ -24,6 +24,8 @@ public class ProductRequst extends Request {
     @Override
     public String stitchingRequest() {
         return super.getPublicUrl();
+
+        // /判断条件
 //        return super.getPublicUrl() + String.format(urlFormat, page, stockSku, updateTimeStart+"", updateTimeEnd+"");
     }
 

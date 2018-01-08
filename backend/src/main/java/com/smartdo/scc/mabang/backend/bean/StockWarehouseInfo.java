@@ -2,6 +2,9 @@ package com.smartdo.scc.mabang.backend.bean;
 
 import lombok.Data;
 
+/**
+ * 1.2 获取商品仓库信息
+ */
 @Data
 public class StockWarehouseInfo {
     private String stockId;

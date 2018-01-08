@@ -3,11 +3,11 @@ package com.smartdo.scc.mabang.backend.bean;
 import lombok.Data;
 
 /**
- * 商品实体
+ * 1.1 商品信息
  */
 @Data
 public class Product {
-    //商品编号
+
     private String stockId;
     private String stockSku;
     private String originalSku;

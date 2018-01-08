@@ -7,6 +7,7 @@ import com.smartdo.scc.mabang.backend.pipe.Pipeline;
 import com.smartdo.scc.mabang.backend.request.Request;
 import com.smartdo.scc.mabang.backend.response.Response;
 import com.smartdo.scc.mabang.common.helper.HttpAPIService;
+import org.junit.Test;
 import org.junit.runners.model.InitializationError;
 
 
@@ -38,7 +39,7 @@ public final class MabangAPI {
      *
      * @throws Exception
      */
-    protected void sendRequst() throws Exception {
+    protected void sendRequest() throws Exception {
         request.setResult(service.doGet(request.stitchingRequest()));
     }
 
@@ -64,12 +65,16 @@ public final class MabangAPI {
         }
     }
 
+    @Test
     public void start() {
         try {
-
-            sendRequst();
+            //判断是否为null
+            sendRequest();
             initResponse();
+            //判断步是否为null
+            System.out.println("start存入数据库");
             pipe();
+            System.out.println("end存入数据库");
         } catch (Exception ex) {
             ex.printStackTrace();
 
