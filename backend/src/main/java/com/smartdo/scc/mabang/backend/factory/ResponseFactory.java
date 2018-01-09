@@ -30,7 +30,9 @@ public class ResponseFactory {
         if (request instanceof OrderInfoRequest) {
             return new OrderInfoResponse(request.getResult());
         }
-
+        if (request instanceof ProductPurchaseInfoRequest) {
+            return new ProductPurchaseInfoResponse(request.getResult());
+        }
         return null;
     }
 }
