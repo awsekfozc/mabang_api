@@ -1,5 +1,6 @@
 package com.smartdo.scc.mabang.backend.request;
 
+import com.smartdo.scc.mabang.backend.exceptions.IncorrectParametersError;
 import com.smartdo.scc.mabang.common.helper.DateUtils;
 import com.smartdo.scc.mabang.common.helper.HttpResult;
 import lombok.Getter;
@@ -28,5 +29,5 @@ public abstract class Request {
         return this.url + String.format("?version=%s&timestamp=%s&developerId=%s&authToken=%s&action=%s", version, timestemp + "", developerId, authToken, action);
     }
 
-    public abstract String stitchingRequest();
+    public abstract String stitchingRequest() throws IncorrectParametersError;
 }

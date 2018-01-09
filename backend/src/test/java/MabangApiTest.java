@@ -1,5 +1,6 @@
 import com.smartdo.scc.mabang.backend.MabangAPI;
 import com.smartdo.scc.mabang.backend.pipe.OrderInfoPipeline;
+import com.smartdo.scc.mabang.backend.request.FbaInfoRequst;
 import com.smartdo.scc.mabang.backend.request.OrderInfoRequest;
 import org.junit.Test;
 
@@ -34,7 +35,19 @@ public class MabangApiTest {
                 .setPipeline(new OrderInfoPipeline())
                 .start();
     }
-   
+
+    /**
+     * 测试FbaInfo
+     */
+    @Test
+    public void tesetFbaInfo() {
+        FbaInfoRequst request = new FbaInfoRequst();   // 6 验证
+        request.setPage(1);
+        MabangAPI.create(request)
+                .setPipeline(new OrderInfoPipeline())
+                .start();
+    }
+
 }
 
 

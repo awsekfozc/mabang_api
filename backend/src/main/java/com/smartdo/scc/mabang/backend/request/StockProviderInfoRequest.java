@@ -1,6 +1,7 @@
 package com.smartdo.scc.mabang.backend.request;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 @Data
 public class StockProviderInfoRequest extends Request{
