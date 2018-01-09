@@ -22,14 +22,11 @@ public class OrderInfoRequest extends Request{
 
     @Override
     public String stitchingRequest() {
-        if((tableBase != null) && (tableBase != page)){
-            System.out.println("StockWarehouseInfoRequest缺少tableBase参数或page参数");
-            System.out.println("StockWarehouseInfoRequest缺少tableBase参数或page参数");
-            System.out.println("StockWarehouseInfoRequest缺少tableBase参数或page参数");
+        if((tableBase == null) || (page == null)){
+            System.out.println("OrderInfoRequest缺少tableBase参数或page参数");
             return null;
         }else{
             String url = super.getPublicUrl() + "&tableBase="+ tableBase+ "&page="+page;
-            System.out.println(url);
             return url;
 //            return super.getPublicUrl() + String.format(urlFormat, tableBase, page, platformOrderIds, status, updateTimeStart+"", updateTimeEnd+"");
         }
