@@ -6,11 +6,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.smartdo.scc.mabang.backend.bean.FbaInfo;
 import com.smartdo.scc.mabang.common.helper.HttpResult;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FbaInfoResponse extends Response{
+@Slf4j
+public class FbaInfoResponse extends Response {
     @Getter
     private List<FbaInfo> productList = new ArrayList<FbaInfo>();
 
@@ -22,28 +24,16 @@ public class FbaInfoResponse extends Response{
 
     @Override
     public void setBeans() {
-        if (result.getCode() == 200) {
+        if (checkResultCode()) {
             JSONObject object = JSON.parseObject(this.result.getBody());
-            System.out.println(object);
-            System.out.println("==================================");
             this.setCode(object.getString("code"));
             this.setMessage(object.getString("message"));
-            if (object.getString("code").equals("000")){
-                String bb = object.getString("data");
-                if(!bb.equals("[]")){
-                    JSONArray dataArray = object.getJSONArray("data");
-                    for(Object fbaInfo:dataArray){
-                        System.out.println(JSON.parseObject(JSON.toJSONString(fbaInfo), FbaInfo.class));
-                        productList.add(JSON.parseObject(JSON.toJSONString(fbaInfo), FbaInfo.class));
-                    }
-                }else {
-                   System.out.println("查询结果为为：" +object);
-                }
-            }else{
-                System.out.println(object.getString("message"));
+            JSONArray dataArray = object.getJSONArray("data");
+            for (Object fbaInfo : dataArray) {
+                productList.add(JSON.parseObject(JSON.toJSONString(fbaInfo), FbaInfo.class));
             }
-        } else {
-            System.out.println("请求出错" + result.getCode());
+        }else{
+            log.warn("请求失败或者");
         }
     }
 }

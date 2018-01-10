@@ -50,4 +50,8 @@ public class Product {
     private String quantityInterval7;
     private String quantityInterval28;
     private String quantityInterval42;
+
+    private String updateDate1; 	//最后出库时间
+    private String updateDate2; 	//最后入库时间
+
 }

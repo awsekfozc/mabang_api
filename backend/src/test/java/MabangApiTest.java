@@ -16,7 +16,8 @@ public class MabangApiTest {
     @Test
     public void testStockWarehouseInfoApi() {
         StockWarehouseInfoRequest request = new StockWarehouseInfoRequest(); // 2 验证
-        request.setStockIds("1338956,1338991");
+//        request.setStockIds("1338956,1338991");
+        request.setStockIds("1");
         MabangAPI.create(request)
                 .setPipeline(new StockWarehouseInfoPipeline())
                 .start();
@@ -46,6 +47,8 @@ public class MabangApiTest {
         OrderInfoRequest request = new OrderInfoRequest(); //5 验证
         request.setPage(1);
         request.setTableBase(1);
+//        request.setPage(1);
+//        request.setTableBase(3);
 
         MabangAPI.create(request)
                 .setPipeline(new OrderInfoPipeline())
@@ -56,6 +59,7 @@ public class MabangApiTest {
     public void testFbaInfoApi() {
         FbaInfoRequst request = new FbaInfoRequst();   // 6 验证
         request.setPage(1);
+
         MabangAPI.create(request)
                 .setPipeline(new FbaInfoPipeline())
                 .start();
@@ -63,7 +67,7 @@ public class MabangApiTest {
 
     @Test
     public void testProductPurchaseInfoApi() {
-        ProductPurchaseInfoRequest productPurchaseInfoRequest = new ProductPurchaseInfoRequest();
+        ProductPurchaseInfoRequest productPurchaseInfoRequest = new ProductPurchaseInfoRequest(); //7
         productPurchaseInfoRequest.setPage(1);
         MabangAPI.create(productPurchaseInfoRequest)
                 .setPipeline(new ProductPurchaseInfoPipeline())

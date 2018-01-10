@@ -11,7 +11,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductPurchaseInfoResponse extends Response{
+public class ProductPurchaseInfoResponse extends Response {
     @Getter
     private List<ProductPurchaseInfo> productPurchaseInfoList = new ArrayList<ProductPurchaseInfo>();
     @Getter
@@ -30,36 +30,28 @@ public class ProductPurchaseInfoResponse extends Response{
             System.out.println(object);
             this.setCode(object.getString("code"));
             this.setMessage(object.getString("message"));
-            if (object.getString("code").equals("000")){
+            if (object.getString("code").equals("000")) {
                 String bb = object.getString("data");
-                if(!bb.equals("[]")){
+                if (!bb.equals("[]")) {
                     JSONArray dataArray = object.getJSONArray("data");
-//                    for(Object productPurchaseInfo:dataArray){
-//                        productPurchaseInfoList.add(JSON.parseObject(JSON.toJSONString(productPurchaseInfo), ProductPurchaseInfo.class));
-//
-//                    }
-                    for (int i = 0; i <dataArray.size() ; i++) {
-                        JSONObject   singeObj  =  dataArray.getJSONObject(i) ;
+                    for (int i = 0; i < dataArray.size(); i++) {
+                        JSONObject singeObj = dataArray.getJSONObject(i);
                         ProductPurchaseInfo entity = JSON.parseObject(JSON.toJSONString(singeObj), ProductPurchaseInfo.class);
                         productPurchaseInfoList.add(entity);
                         JSONArray purchaseDetailArray = singeObj.getJSONArray("PurchaseDetail");
                         String groupIdStr = singeObj.getString("groupId");
-                        for (int j = 0; j <purchaseDetailArray.size() ; j++) {
+                        for (int j = 0; j < purchaseDetailArray.size(); j++) {
                             Object purchaseDetailObj = purchaseDetailArray.get(j);
                             PurchaseDetail purchaseDetailEntity = JSON.parseObject(JSON.toJSONString(purchaseDetailObj), PurchaseDetail.class);
                             purchaseDetailEntity.setGroupId(groupIdStr);
                             purchaseDetailList.add(purchaseDetailEntity);
                         }
-
                     }
-
-
-
-                }else {
-                   System.out.println("查询结果为：" +object);
+                } else {
+                    System.out.println("查询结果为：" + object);
                 }
-            }else{
-                System.out.println("查询结果为：" +object);
+            } else {
+                System.out.println("查询结果为：" + object);
             }
         } else {
             System.out.println("请求出错" + result.getCode());

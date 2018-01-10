@@ -51,7 +51,7 @@ public class ProductPurchaseStorageInInfoResponse extends Response{
                    System.out.println("查询结果为为：" +object);
                 }
             }else{
-                System.out.println(object.getString("message"));
+                System.out.println("查询结果为：" +object);
             }
         } else {
             System.out.println("请求出错" + result.getCode());

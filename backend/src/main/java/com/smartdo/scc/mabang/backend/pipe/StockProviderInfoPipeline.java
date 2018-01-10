@@ -16,11 +16,10 @@ public class StockProviderInfoPipeline implements Pipeline {
         StockProviderInfoResponse stockProviderInfoResponse = (StockProviderInfoResponse) response;
         //持久化
         SqlSession session = DbFactory.getInstance().openSession();
-
         IStockProviderInfoDao dao = DbFactory.getBeanMapper(IStockProviderInfoDao.class, session);
         try {
-            for (StockProviderInfo stockProviderInfo : stockProviderInfoResponse.getProductList()) {
-                    dao.add(stockProviderInfo);
+            for (StockProviderInfo stockProviderInfo : stockProviderInfoResponse.getStockProviderInfoList()) {
+                dao.add(stockProviderInfo);
             }
         } finally {
             session.commit();

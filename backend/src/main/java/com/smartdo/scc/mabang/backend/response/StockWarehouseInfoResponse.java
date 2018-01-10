@@ -31,15 +31,14 @@ public class StockWarehouseInfoResponse extends Response {
             JSONObject object = JSON.parseObject(this.result.getBody());
             this.setCode(object.getString("code"));
             this.setMessage(object.getString("message"));
-            JSONArray array = object.getJSONArray("data");
-
             if(object.getString("code").equals("000")){
+                JSONArray array = object.getJSONArray("data");
                 for(Object stockWarehouseInfo:array){
                     System.out.println(stockWarehouseInfo);
                     productList.add(JSON.parseObject(JSON.toJSONString(stockWarehouseInfo), StockWarehouseInfo.class));
                 }
             }else {
-                System.out.println(object.getString("message"));
+                System.out.println("查询结果为：" +object);
             }
         } else {
             System.out.println("请求出错" + result.getCode());

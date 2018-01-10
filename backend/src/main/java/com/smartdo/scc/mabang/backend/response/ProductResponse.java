@@ -44,7 +44,7 @@ public class ProductResponse extends Response {
                     productList.add(JSON.parseObject(JSON.toJSONString(product), Product.class));
                 }
             }else{
-                System.out.println(object.getString("message"));
+                System.out.println("查询结果为：" +object);
             }
         } else {
             System.out.println("请求出错" + result.getCode());

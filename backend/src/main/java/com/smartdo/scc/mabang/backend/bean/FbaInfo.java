@@ -42,4 +42,17 @@ public class FbaInfo {
     private String title;// 商品标题
     private String weight;// 	单品重量
 
+
+    private String LastsyncTime;// 	最后更新时间
+    private String shopIds;//	店铺名称，多个已逗号隔开
+    private String openDate;//	上架时间
+    private String yesterdaySales;//	昨日销量
+    private String beforeYesterdaySales;//	前天销量
+    private String threeDaysAgoSales;//	上前销量
+    private String Transporttype1;//海运运输周期
+    private String Transporttype2;//	空运运输周期
+    private String Transporttype3;//	快递运输周期
+    private String Transporttype4;//	陆运海运运输周期
+
+
 }

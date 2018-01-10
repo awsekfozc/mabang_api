@@ -1,31 +1,42 @@
 package com.smartdo.scc.mabang.backend.request;
 
+import com.smartdo.scc.mabang.backend.exceptions.IncorrectParametersError;
 import lombok.Data;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
 public class StockMachiningInfoRequest extends Request {
-    private static String myAction = "get-stock-machining-info-data"; //必填成熟
-    private String stockIds ; //必填参数
-    private String urlFormat = "&stockIds=%s";
+    private static String stockMachiningInfoAction = "get-stock-machining-info-data"; //Y 必填参数
+    private String stockIds ; // Y 必填参数 	3.0 库存 sku 编号多个已逗号隔开；最对支持 10 个
 
     public StockMachiningInfoRequest() {
-        this(myAction);
+        this(stockMachiningInfoAction);
     }
     private StockMachiningInfoRequest(String action) {
         super(action);
     }
 
     @Override
-    public String stitchingRequest() {
-
-        //要检验！！！！！！！！！！！！！！！！！！！！！！
-        if(stockIds == null ){
-            System.out.println("StockWarehouseInfoRequest必须需要stockIds参数");
-            System.out.println("StockWarehouseInfoRequest必须需要stockIds参数");
-            System.out.println("StockWarehouseInfoRequest必须需要stockIds参数");
-            return null;
+    public String stitchingRequest() throws IncorrectParametersError {
+        if(stockIds == null){
+            throw new IncorrectParametersError("StockMachiningInfoRequest必须设置[stockIds]参数");
         }else{
-            return super.getPublicUrl() + String.format(urlFormat, stockIds);
+            boolean flag = checkLength(stockIds);
+            if(!flag){
+                throw new IncorrectParametersError("StockMachiningInfoRequest的[stockIds]多个参数编号以逗号隔开；最对支持 10 个");
+            }
+            boolean flagEmpty = checkIsEmpty(stockIds);
+            if(flagEmpty){
+                throw new IncorrectParametersError("StockWarehouseInfoRequest必须设置[stockIds]参数");
+            }
+            Map map = new HashMap();
+            map.put("stockIds",stockIds);
+            String Parameters = SplicingParameters(map);
+            System.out.println(Parameters);
+            System.out.println(super.getPublicUrl() + Parameters);
+            return super.getPublicUrl() + Parameters;
         }
     }
 
