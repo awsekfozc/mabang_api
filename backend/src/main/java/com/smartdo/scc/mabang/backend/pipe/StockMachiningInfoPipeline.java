@@ -19,7 +19,7 @@ public class StockMachiningInfoPipeline implements Pipeline {
 
         IStockMachiningInfoDao dao = DbFactory.getBeanMapper(IStockMachiningInfoDao.class, session);
         try {
-            for (StockMachiningInfo stockMachiningInfo : stockMachiningInfoResponse.getProductList()) {
+            for (StockMachiningInfo stockMachiningInfo : stockMachiningInfoResponse.getStockMachiningInfoList()) {
                     dao.add(stockMachiningInfo);
             }
         } finally {

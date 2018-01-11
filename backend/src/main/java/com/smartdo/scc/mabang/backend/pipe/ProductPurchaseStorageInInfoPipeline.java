@@ -18,7 +18,7 @@ public class ProductPurchaseStorageInInfoPipeline implements Pipeline {
         SqlSession session = DbFactory.getInstance().openSession();
         IProductPurchaseStorageInInfoDao dao = DbFactory.getBeanMapper(IProductPurchaseStorageInInfoDao.class, session);
         try {
-            for (ProductPurchaseStorageInInfo ProductPurchaseStorageInInfo : productPurchaseStorageInInfoResponse.getProductList()) {
+            for (ProductPurchaseStorageInInfo ProductPurchaseStorageInInfo : productPurchaseStorageInInfoResponse.getEntityList()) {
                     dao.add(ProductPurchaseStorageInInfo);
             }
         } finally {

@@ -7,10 +7,11 @@ import com.smartdo.scc.mabang.backend.bean.StockProviderInfo;
 import com.smartdo.scc.mabang.common.helper.HttpResult;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Slf4j
 public class StockProviderInfoResponse extends Response{
     @Getter
     private List<StockProviderInfo> stockProviderInfoList = new ArrayList<StockProviderInfo>();
@@ -38,9 +39,11 @@ public class StockProviderInfoResponse extends Response{
                 }
             }else{
                 System.out.println("查询结果为：" +object);
+                log.warn("查询结果为：" +object);
             }
         } else {
             System.out.println("请求出错" + result.getCode());
+            log.warn("请求出错" + result.getCode());
         }
     }
 }

@@ -12,6 +12,7 @@
         <module>backend</module>
         <module>common</module>
         <module>test-spring-boot</module>
+        <module>JobScheduling</module>
     </modules>
 
 

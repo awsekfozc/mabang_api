@@ -7,13 +7,14 @@ import com.smartdo.scc.mabang.backend.bean.StockMachiningInfo;
 import com.smartdo.scc.mabang.common.helper.HttpResult;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Slf4j
 public class StockMachiningInfoResponse extends Response {
     @Getter
-    private List<StockMachiningInfo> productList = new ArrayList<StockMachiningInfo>();
+    private List<StockMachiningInfo> stockMachiningInfoList = new ArrayList<StockMachiningInfo>();
     @Setter
     private String stockIds;
 
@@ -43,18 +44,21 @@ public class StockMachiningInfoResponse extends Response {
                                 StockMachiningInfo entity = JSON.parseObject(JSON.toJSONString(stockMachiningInfo), StockMachiningInfo.class);
                                 entity.setStockIds(stockIdsArry[i]);
                                 System.out.println(entity);
-                                productList.add(entity);
+                                stockMachiningInfoList.add(entity);
                             }
                         }
                     }
                 } else {
                     System.out.println("查询结果为" + object);
+                    log.warn("查询结果为" + object);
                 }
             } else {
                 System.out.println("查询结果为" +object);
+                log.warn("查询结果为" + object);
             }
         } else {
             System.out.println("请求出错" + result.getCode());
+            log.warn("请求出错" + result.getCode());
         }
     }
 }

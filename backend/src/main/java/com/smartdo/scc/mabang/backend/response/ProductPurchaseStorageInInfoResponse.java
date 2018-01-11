@@ -7,13 +7,14 @@ import com.smartdo.scc.mabang.backend.bean.ProductPurchaseStorageInInfo;
 import com.smartdo.scc.mabang.common.helper.HttpResult;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Slf4j
 public class ProductPurchaseStorageInInfoResponse extends Response{
     @Getter
-    private List<ProductPurchaseStorageInInfo> productList = new ArrayList<ProductPurchaseStorageInInfo>();
+    private List<ProductPurchaseStorageInInfo> entityList = new ArrayList<ProductPurchaseStorageInInfo>();
     @Setter
     private String purchaseGroups ;
 
@@ -33,28 +34,25 @@ public class ProductPurchaseStorageInInfoResponse extends Response{
             this.setCode(object.getString("code"));
             this.setMessage(object.getString("message"));
             if (object.getString("code").equals("000")){
-                String bb = object.getString("data");
-                if(!bb.equals("[]")){
-                    JSONArray dataArray = object.getJSONArray("data");
-                    for (int i = 0; i < dataArray.size(); i++) {
-                        JSONObject singeObj=dataArray.getJSONObject(i);
-                        String purchaseGroup = singeObj.getString("purchaseGroup");
-                        JSONArray entityArray = singeObj.getJSONArray("PurchaseDetail");
-                        for (int j = 0; j < entityArray.size(); j++) {
-                            Object productPurchaseStorageInInfo = entityArray.get(j);
-                            ProductPurchaseStorageInInfo entity = JSON.parseObject(JSON.toJSONString(productPurchaseStorageInInfo), ProductPurchaseStorageInInfo.class);
-                            entity.setPurchaseGroup(purchaseGroup);
-                            productList.add(entity);
-                        }
+                JSONArray dataArray = object.getJSONArray("data");
+                for (int i = 0; i < dataArray.size(); i++) {
+                    JSONObject singeObj=dataArray.getJSONObject(i);
+                    String purchaseGroup = singeObj.getString("purchaseGroup");
+                    JSONArray entityArray = singeObj.getJSONArray("PurchaseDetail");
+                    for (int j = 0; j < entityArray.size(); j++) {
+                        Object productPurchaseStorageInInfo = entityArray.get(j);
+                        ProductPurchaseStorageInInfo entity = JSON.parseObject(JSON.toJSONString(productPurchaseStorageInInfo), ProductPurchaseStorageInInfo.class);
+                        entity.setPurchaseGroup(purchaseGroup);
+                        entityList.add(entity);
                     }
-                }else {
-                   System.out.println("查询结果为为：" +object);
                 }
             }else{
                 System.out.println("查询结果为：" +object);
+                log.warn("查询结果为：" +object);
             }
         } else {
             System.out.println("请求出错" + result.getCode());
+            log.warn("请求出错" + result.getCode());
         }
     }
 }

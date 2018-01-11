@@ -8,12 +8,14 @@
         <outputRelativeToContentRoot value="true" />
         <module name="backend" />
         <module name="common" />
+        <module name="JobScheduling" />
         <module name="test-spring-boot" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="backend" target="1.8" />
       <module name="common" target="1.8" />
+      <module name="JobScheduling" target="1.8" />
       <module name="mabang_api" target="1.8" />
       <module name="test-spring-boot" target="1.8" />
     </bytecodeTargetLevel>

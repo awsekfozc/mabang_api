@@ -73,7 +73,7 @@ public final class MabangAPI {
             initResponse();
             //判断步是否为null
             System.out.println("start存入数据库");
-            pipe();
+//            pipe();
             System.out.println("end存入数据库");
         } catch (Exception ex) {
             ex.printStackTrace();

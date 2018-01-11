@@ -20,7 +20,7 @@ public class StockWarehouseInfoPipeline implements Pipeline {
         SqlSession session = DbFactory.getInstance().openSession();
         IStockWarehouseInfoDao dao = DbFactory.getBeanMapper(IStockWarehouseInfoDao.class, session);
         try {
-                for (StockWarehouseInfo stockWarehouseInfo : stockWarehouseInfoResponse.getProductList()) {
+                for (StockWarehouseInfo stockWarehouseInfo : stockWarehouseInfoResponse.getStockWarehouseInfoList()) {
                     dao.add(stockWarehouseInfo);
                 }
 

@@ -14,7 +14,7 @@ import java.util.List;
 @Slf4j
 public class FbaInfoResponse extends Response {
     @Getter
-    private List<FbaInfo> productList = new ArrayList<FbaInfo>();
+    private List<FbaInfo> fbaInfoList = new ArrayList<FbaInfo>();
 
     public FbaInfoResponse(HttpResult result) {
         super(result);
@@ -30,10 +30,10 @@ public class FbaInfoResponse extends Response {
             this.setMessage(object.getString("message"));
             JSONArray dataArray = object.getJSONArray("data");
             for (Object fbaInfo : dataArray) {
-                productList.add(JSON.parseObject(JSON.toJSONString(fbaInfo), FbaInfo.class));
+                fbaInfoList.add(JSON.parseObject(JSON.toJSONString(fbaInfo), FbaInfo.class));
             }
         }else{
-            log.warn("请求失败或者");
+            log.warn("请求失败或者请求参数不对");
         }
     }
 }

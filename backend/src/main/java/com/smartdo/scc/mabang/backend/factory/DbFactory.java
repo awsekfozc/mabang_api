@@ -1,6 +1,5 @@
 package com.smartdo.scc.mabang.backend.factory;
 
-import com.smartdo.scc.mabang.backend.dao.IProductDao;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;

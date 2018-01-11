@@ -9,8 +9,8 @@ import com.smartdo.scc.mabang.backend.response.*;
 public class ResponseFactory {
 
     public static Response getResponse(Request request) {
-        if (request instanceof ProductRequst) {
-            return new ProductResponse(request.getResult());
+        if (request instanceof StockInfoRequst) {
+            return new StockInfoActionResponse(request.getResult());
         }
         if (request instanceof StockWarehouseInfoRequest) {
             return new StockWarehouseInfoResponse(request.getResult());

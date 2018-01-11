@@ -4,10 +4,10 @@ package com.smartdo.scc.mabang.backend.response;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.smartdo.scc.mabang.backend.bean.Product;
+import com.smartdo.scc.mabang.backend.bean.StockInfo;
 import com.smartdo.scc.mabang.common.helper.HttpResult;
 import lombok.Getter;
-import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +15,14 @@ import java.util.List;
 /**
  * 商品响应类
  */
-@ToString
-public class ProductResponse extends Response {
+@Slf4j
+public class StockInfoActionResponse extends Response {
 
     @Getter
-    private List<Product> productList = new ArrayList<>();
+    private List<StockInfo> stockInfoList = new ArrayList<>();
 
 
-    public ProductResponse(HttpResult result) {
+    public StockInfoActionResponse(HttpResult result) {
         super(result);
         setBeans();
     }
@@ -41,13 +41,15 @@ public class ProductResponse extends Response {
             if(object.getString("code").equals("000")){
                 for(Object product:array){
                     System.out.println(product);
-                    productList.add(JSON.parseObject(JSON.toJSONString(product), Product.class));
+                    stockInfoList.add(JSON.parseObject(JSON.toJSONString(product), StockInfo.class));
                 }
             }else{
                 System.out.println("查询结果为：" +object);
+                log.warn("查询结果为：" +object);
             }
         } else {
             System.out.println("请求出错" + result.getCode());
+            log.warn("请求出错" + result.getCode());
         }
     }
 }

@@ -6,7 +6,7 @@ import lombok.Data;
  * 1.1 商品信息
  */
 @Data
-public class Product {
+public class StockInfo {
 
     private String stockId;
     private String stockSku;
@@ -51,7 +51,7 @@ public class Product {
     private String quantityInterval28;
     private String quantityInterval42;
 
-    private String updateDate1; 	//最后出库时间
-    private String updateDate2; 	//最后入库时间
+    private String updateDate1;    //最后出库时间
+    private String updateDate2;    //最后入库时间
 
 }

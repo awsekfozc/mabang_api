@@ -18,7 +18,7 @@ public class FbaInfoPipeline implements Pipeline {
         SqlSession session = DbFactory.getInstance().openSession();
         IFbaInfoDao dao = DbFactory.getBeanMapper(IFbaInfoDao.class, session);
         try {
-            for (FbaInfo fbaInfo : fbaInfoResponse.getProductList()) {
+            for (FbaInfo fbaInfo : fbaInfoResponse.getFbaInfoList()) {
                     dao.add(fbaInfo);
             }
         } finally {

@@ -7,10 +7,11 @@ import com.smartdo.scc.mabang.backend.bean.ProductPurchaseInfo;
 import com.smartdo.scc.mabang.backend.bean.PurchaseDetail;
 import com.smartdo.scc.mabang.common.helper.HttpResult;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Slf4j
 public class ProductPurchaseInfoResponse extends Response {
     @Getter
     private List<ProductPurchaseInfo> productPurchaseInfoList = new ArrayList<ProductPurchaseInfo>();
@@ -31,30 +32,27 @@ public class ProductPurchaseInfoResponse extends Response {
             this.setCode(object.getString("code"));
             this.setMessage(object.getString("message"));
             if (object.getString("code").equals("000")) {
-                String bb = object.getString("data");
-                if (!bb.equals("[]")) {
-                    JSONArray dataArray = object.getJSONArray("data");
-                    for (int i = 0; i < dataArray.size(); i++) {
-                        JSONObject singeObj = dataArray.getJSONObject(i);
-                        ProductPurchaseInfo entity = JSON.parseObject(JSON.toJSONString(singeObj), ProductPurchaseInfo.class);
-                        productPurchaseInfoList.add(entity);
-                        JSONArray purchaseDetailArray = singeObj.getJSONArray("PurchaseDetail");
-                        String groupIdStr = singeObj.getString("groupId");
-                        for (int j = 0; j < purchaseDetailArray.size(); j++) {
-                            Object purchaseDetailObj = purchaseDetailArray.get(j);
-                            PurchaseDetail purchaseDetailEntity = JSON.parseObject(JSON.toJSONString(purchaseDetailObj), PurchaseDetail.class);
-                            purchaseDetailEntity.setGroupId(groupIdStr);
-                            purchaseDetailList.add(purchaseDetailEntity);
-                        }
+                JSONArray dataArray = object.getJSONArray("data");
+                for (int i = 0; i < dataArray.size(); i++) {
+                    JSONObject singeObj = dataArray.getJSONObject(i);
+                    ProductPurchaseInfo entity = JSON.parseObject(JSON.toJSONString(singeObj), ProductPurchaseInfo.class);
+                    productPurchaseInfoList.add(entity);
+                    JSONArray purchaseDetailArray = singeObj.getJSONArray("PurchaseDetail");
+                    String groupIdStr = singeObj.getString("groupId");
+                    for (int j = 0; j < purchaseDetailArray.size(); j++) {
+                        Object purchaseDetailObj = purchaseDetailArray.get(j);
+                        PurchaseDetail purchaseDetailEntity = JSON.parseObject(JSON.toJSONString(purchaseDetailObj), PurchaseDetail.class);
+                        purchaseDetailEntity.setGroupId(groupIdStr);
+                        purchaseDetailList.add(purchaseDetailEntity);
                     }
-                } else {
-                    System.out.println("查询结果为：" + object);
                 }
             } else {
                 System.out.println("查询结果为：" + object);
+                log.warn("查询结果为：" + object);
             }
         } else {
             System.out.println("请求出错" + result.getCode());
+            log.warn("请求出错" + result.getCode());
         }
     }
 }
