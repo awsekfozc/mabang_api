@@ -6,7 +6,7 @@ import org.quartz.impl.StdSchedulerFactory;
 
 public class MaBangApiTask {
 
-    public static void main(String[] args) throws Throwable {
+    public void taskStart() throws Throwable {
         SchedulerFactory factory = new StdSchedulerFactory();
         Scheduler scheduler = factory.getScheduler();
 

@@ -18,7 +18,7 @@ import java.util.Date;
 public class MabangApiInit {
 
     @Test
-    public void all() {
+    public void allDBInit() {
         //清空相关表
         CommonService commonService = new CommonService();
         commonService.deleteTable();
