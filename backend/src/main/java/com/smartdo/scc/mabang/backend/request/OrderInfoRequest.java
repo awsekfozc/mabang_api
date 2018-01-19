@@ -3,6 +3,8 @@ package com.smartdo.scc.mabang.backend.request;
 import com.smartdo.scc.mabang.backend.exceptions.IncorrectParametersError;
 import lombok.Data;
 
+import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,10 +37,23 @@ public class OrderInfoRequest extends Request{
            map.put("page", page);
            map.put("platformOrderIds", platformOrderIds);
            map.put("status", status);
-           map.put("updateTimeStart", updateTimeStart);
-           map.put("updateTimeEnd", updateTimeEnd);
+
+           if(updateTimeStart !=null && updateTimeEnd !=null) {
+               SimpleDateFormat sdf =   new SimpleDateFormat( " yyyy-MM-dd HH:mm:ss " );
+               String UpdateTimeStartStr = "";
+               String UpdateTimeEndStr = "";
+               try {
+                   UpdateTimeStartStr = java.net.URLEncoder.encode(sdf.format(updateTimeStart), "utf-8");
+                   UpdateTimeEndStr = java.net.URLEncoder.encode(sdf.format(updateTimeEnd), "utf-8");
+               } catch (UnsupportedEncodingException e) {
+                   e.printStackTrace();
+               }
+               map.put("updateTimeStart", UpdateTimeStartStr);
+               map.put("updateTimeEnd", UpdateTimeEndStr);
+           }
+
+
            String Parameters = SplicingParameters(map);
-           System.out.println(Parameters);
            System.out.println(super.getPublicUrl() + Parameters);
            return super.getPublicUrl() + Parameters;
        }

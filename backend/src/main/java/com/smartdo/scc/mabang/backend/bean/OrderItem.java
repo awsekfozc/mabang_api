@@ -6,7 +6,7 @@ import lombok.Data;
  * OrderItem
  */
 @Data
-public class OrderItem {
+public class OrderItem extends DataEntity{
     private String platformOrderId;   //订单编号  (用做与OrderInfo做唯一性关联)
 
     private String costPrice;   // 	商品成本价

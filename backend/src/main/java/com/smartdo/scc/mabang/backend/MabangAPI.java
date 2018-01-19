@@ -1,18 +1,18 @@
 package com.smartdo.scc.mabang.backend;
 
 
+import com.smartdo.scc.mabang.backend.exceptions.HttpClientError;
 import com.smartdo.scc.mabang.backend.exceptions.ResponseTypeError;
 import com.smartdo.scc.mabang.backend.factory.ResponseFactory;
 import com.smartdo.scc.mabang.backend.pipe.Pipeline;
 import com.smartdo.scc.mabang.backend.request.Request;
 import com.smartdo.scc.mabang.backend.response.Response;
 import com.smartdo.scc.mabang.common.helper.HttpAPIService;
-import org.junit.Test;
+import lombok.Data;
 import org.junit.runners.model.InitializationError;
 
-
-public final class MabangAPI {
-
+@Data
+public  class MabangAPI {
 
     private Request request;
     private Pipeline pipeline;
@@ -20,13 +20,12 @@ public final class MabangAPI {
 
     private HttpAPIService service = new HttpAPIService();
 
-    private MabangAPI(Request request) {
+    public MabangAPI(Request request) {
         this.request = request;
     }
 
     public MabangAPI setPipeline(Pipeline pipeline) {
         this.pipeline = pipeline;
-
         return this;
     }
 
@@ -39,14 +38,14 @@ public final class MabangAPI {
      *
      * @throws Exception
      */
-    protected void sendRequest() throws Exception {
+    public void sendRequest() throws Exception {
         request.setResult(service.doGet(request.stitchingRequest()));
     }
 
     /**
      * 初始化响应对象
      */
-    protected void initResponse() {
+    public void initResponse() throws HttpClientError {
         response = ResponseFactory.getResponse(request);
     }
 
@@ -55,7 +54,7 @@ public final class MabangAPI {
      *
      * @throws ResponseTypeError
      */
-    protected void pipe() throws ResponseTypeError {
+    public void pipe() throws ResponseTypeError {
         pipeline.save(response);
     }
 
@@ -65,20 +64,15 @@ public final class MabangAPI {
         }
     }
 
-    @Test
     public void start() {
         try {
-            //判断是否为null
             sendRequest();
             initResponse();
-            //判断步是否为null
             System.out.println("start存入数据库");
-//            pipe();
+            pipe();
             System.out.println("end存入数据库");
         } catch (Exception ex) {
             ex.printStackTrace();
-
         }
     }
-
 }

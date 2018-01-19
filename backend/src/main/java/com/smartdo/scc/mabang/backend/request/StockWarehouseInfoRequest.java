@@ -3,6 +3,7 @@ package com.smartdo.scc.mabang.backend.request;
 import com.smartdo.scc.mabang.backend.exceptions.IncorrectParametersError;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +11,8 @@ import java.util.Map;
 public class StockWarehouseInfoRequest extends Request{
     private static String stockWarehouseInfoAction = "get-stock-warehouse-info-data";//Y
     private String stockIds ;  //Y   3.0 库存 sku 编号多个已逗号隔开；最对支持 10 个
+    private Date updateTimeStart;  //无需传递 ，仅为后续生成response中使用
+    private Date updateTimeEnd;  //无需传递 ，仅为后续生成response中使用
 
     private StockWarehouseInfoRequest(String action) {
         super(action);
@@ -31,7 +34,7 @@ public class StockWarehouseInfoRequest extends Request{
             Map map = new HashMap();
             map.put("stockIds",stockIds);
             String Parameters = SplicingParameters(map);
-            System.out.println(Parameters);
+//            System.out.println(Parameters);
             System.out.println(super.getPublicUrl() + Parameters);
             return super.getPublicUrl() + Parameters;
         }
@@ -41,9 +44,4 @@ public class StockWarehouseInfoRequest extends Request{
         this(stockWarehouseInfoAction);
     }
 
-//    public static void main(String[] args) {
-//        String stockIds = "";
-//        String[] stockIdsArry = stockIds.split(",");
-//        System.out.println(stockIdsArry.length);
-//    }
 }

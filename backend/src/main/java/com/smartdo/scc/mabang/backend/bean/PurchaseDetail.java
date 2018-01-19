@@ -3,10 +3,10 @@ package com.smartdo.scc.mabang.backend.bean;
 import lombok.Data;
 
 /**
- *采购单商品
+ *采购单商品(为1.7接口ProductPurchaseInfo的子属性)
  */
 @Data
-public class PurchaseDetail {
+public class PurchaseDetail extends DataEntity{
     private String groupId ; //采购单号  （用作与ProductPurchaseInfo做唯一性关联）
 
     private String purchaseNum;// 	采购数量

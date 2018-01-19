@@ -4,7 +4,8 @@ package com.smartdo.scc.mabang.backend.response;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.smartdo.scc.mabang.backend.bean.StockInfo;
+import com.smartdo.scc.mabang.backend.bean.StockStorageLog;
+import com.smartdo.scc.mabang.backend.exceptions.HttpClientError;
 import com.smartdo.scc.mabang.common.helper.HttpResult;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -16,20 +17,22 @@ import java.util.List;
  * 商品响应类
  */
 @Slf4j
-public class StockInfoActionResponse extends Response {
+public class StockStorageLogResponse extends Response {
 
     @Getter
-    private List<StockInfo> stockInfoList = new ArrayList<>();
+    private List<StockStorageLog> stockStorageLogList = new ArrayList<StockStorageLog>();
 
 
-    public StockInfoActionResponse(HttpResult result) {
+    public StockStorageLogResponse(HttpResult result) throws HttpClientError {
         super(result);
         setBeans();
     }
 
 
     @Override
-    public void setBeans() {
+    public void setBeans() throws HttpClientError
+
+    {
         if (result.getCode() == 200) {
             JSONObject object = JSON.parseObject(this.result.getBody());
             this.setCode(object.getString("code"));
@@ -39,17 +42,16 @@ public class StockInfoActionResponse extends Response {
             this.setCode(object.getString("code"));
             JSONArray array = object.getJSONArray("data");
             if(object.getString("code").equals("000")){
-                for(Object product:array){
-                    System.out.println(product);
-                    stockInfoList.add(JSON.parseObject(JSON.toJSONString(product), StockInfo.class));
+                for(Object obj:array){
+                    stockStorageLogList.add(JSON.parseObject(JSON.toJSONString(obj), StockStorageLog.class));
                 }
             }else{
-                System.out.println("查询结果为：" +object);
                 log.warn("查询结果为：" +object);
+                throw new HttpClientError("查询结果为：" + object);
             }
         } else {
-            System.out.println("请求出错" + result.getCode());
             log.warn("请求出错" + result.getCode());
+            throw new HttpClientError("请求出错" + result.getCode());
         }
     }
 }

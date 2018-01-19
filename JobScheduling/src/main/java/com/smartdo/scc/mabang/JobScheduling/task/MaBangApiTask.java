@@ -1,41 +1,36 @@
-import com.smartdo.scc.mabang.JobScheduling.jobs.MabangApiJob;
+package com.smartdo.scc.mabang.JobScheduling.task;
+
+import com.smartdo.scc.mabang.JobScheduling.job.MabangApiJob;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
-import java.util.Date;
+public class MaBangApiTask {
 
-public class Test {
     public static void main(String[] args) throws Throwable {
         SchedulerFactory factory = new StdSchedulerFactory();
-        // 从工厂里面拿到一个scheduler实例
         Scheduler scheduler = factory.getScheduler();
-        // 计算任务的开始时间，DateBuilder.evenMinuteDate方法是取下一个整数分钟
-        Date runTime = DateBuilder.evenMinuteDate(new Date());
-        // 真正执行的任务并不是Job接口的实例，而是用反射的方式实例化的一个JobDetail实例
-//        JobDetail job = JobBuilder.newJob(MyJob.class).withIdentity("job1", "group1").build();
-        JobDetail job = JobBuilder.newJob(MabangApiJob.class).withIdentity("job1", "group1").build();
-        // 定义一个触发器，startAt方法定义了任务应当开始的时间
-        Trigger trigger = TriggerBuilder.newTrigger().withIdentity("trigger1", "group1").startAt(runTime).build();
-        // @NOTICE
-        // 与SimpleTrigger对比：类不同了，现在的是Trigger的子类CronTrigger；withSchedule中的参数变为CronScheduleBuilder了
-        // CronScheduleBuilder可以通过类似"0/13 * * * * ?"这种表达式来创建定时任务
-        // 当前这个表达式的定义是每个秒是13的倍数，或者是0的时候，都触发任务
-        //CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity("trigger1", "group1")
-         //       .withSchedule(CronScheduleBuilder.cronSchedule("0/13 * * * * ?")).build();
 
-        // 将任务和Trigger放入scheduler
+        JobDetail job = JobBuilder.newJob(MabangApiJob.class).withIdentity("job1", "group1").build();
+        // @NOTICE
+        // 当前这个表达式("0 0 0/1 * * ?")的定义是每个时是1的倍数，或者是0的的整点时候，都触发任务
+        CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity("trigger1", "group1")
+                .withSchedule(CronScheduleBuilder.cronSchedule("0 0 0/1 * * ?")).build();
         scheduler.scheduleJob(job, trigger);
         scheduler.start();
-        try {
-            // 等待65秒，保证下一个整数分钟出现，这里注意，如果主线程停止，任务是不会执行的
-            Thread.sleep(65L * 1000L);
-        } catch (Exception e) {
-
-        }
-        // scheduler结束
-        scheduler.shutdown(true);
     }
 }
+
+
+//--------------------------------------
+//      每隔5秒执行一次：*/5 * * * * ?
+//      每隔1分钟执行一次：0 */1 * * * ?
+//      每天23点执行一次：0 0 23 * * ?
+//      每天凌晨1点执行一次：0 0 1 * * ?
+//      每月1号凌晨1点执行一次：0 0 1 1 * ?
+//      每月最后一天23点执行一次：0 0 23 L * ?
+//      每周星期天凌晨1点实行一次：0 0 1 ? * L
+//      在26分、29分、33分执行一次：0 26,29,33 * * * ?
+//      每天的0点、13点、18点、21点都执行一次：0 0 0,13,18,21 * * ?
 
 /*
 --------------------------------------
@@ -59,3 +54,4 @@ public class Test {
     0 11 11 11 11 ?         每年的11月11号 11点11分触发(光棍节)
 --------------------------------------
  */
+

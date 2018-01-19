@@ -2,6 +2,8 @@ package com.smartdo.scc.mabang.backend.request;
 
 import lombok.Data;
 
+import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +19,6 @@ public class StockInfoRequst extends Request {
     private String stockSku;//N 	库存 sku 编号
     private Date updateTimeStart;//N 	最后更新开始时间
     private Date updateTimeEnd;//N 	最后更新结束时间
-//    private String urlFormat = "&page=%d&stockSku=%s&updateTimeStart=%s&updateTimeEnd=%s";
 
     private StockInfoRequst(String action) {
         super(action);
@@ -28,13 +29,26 @@ public class StockInfoRequst extends Request {
         Map map = new HashMap();
         map.put("page",page);
         map.put("stockSku",stockSku);
-        map.put("updateTimeStart",updateTimeStart);
-        map.put("updateTimeEnd",updateTimeEnd);
+
+
+        if(updateTimeStart !=null && updateTimeEnd !=null) {
+            SimpleDateFormat sdf =   new SimpleDateFormat( " yyyy-MM-dd HH:mm:ss " );
+            String UpdateTimeStartStr = "";
+            String UpdateTimeEndStr = "";
+            try {
+                UpdateTimeStartStr = java.net.URLEncoder.encode(sdf.format(updateTimeStart), "utf-8");
+                UpdateTimeEndStr = java.net.URLEncoder.encode(sdf.format(updateTimeEnd), "utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            map.put("updateTimeStart", UpdateTimeStartStr);
+            map.put("updateTimeEnd", UpdateTimeEndStr);
+        }
+
         String Parameters = SplicingParameters(map);
-        System.out.println(Parameters);
+//        System.out.println(Parameters);
         System.out.println(super.getPublicUrl() + Parameters);
         return super.getPublicUrl() + Parameters;
-        // return super.getPublicUrl() + String.format(urlFormat, page, stockSku, updateTimeStart+"", updateTimeEnd+"");
     }
 
     public StockInfoRequst() {

@@ -4,6 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.smartdo.scc.mabang.backend.bean.ProductPurchaseStorageInInfo;
+import com.smartdo.scc.mabang.backend.exceptions.HttpClientError;
+import com.smartdo.scc.mabang.backend.request.ProductPurchaseStorageInInfoRequest;
+import com.smartdo.scc.mabang.backend.request.Request;
 import com.smartdo.scc.mabang.common.helper.HttpResult;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,21 +21,24 @@ public class ProductPurchaseStorageInInfoResponse extends Response{
     @Setter
     private String purchaseGroups ;
 
-    public ProductPurchaseStorageInInfoResponse(HttpResult result, String purchaseGroups) {
+    public ProductPurchaseStorageInInfoResponse(HttpResult result, String purchaseGroups, Request r) throws HttpClientError {
         super(result);
         this.purchaseGroups = purchaseGroups;
+        this.updateTimeStart = ((ProductPurchaseStorageInInfoRequest)r).getUpdateTimeStart();
+        this.updateTimeEnd = ((ProductPurchaseStorageInInfoRequest)r).getUpdateTimeEnd();
         setBeans();
+
     }
 
 
     @Override
-    public void setBeans() {
+    public void setBeans()throws  HttpClientError{
         if (result.getCode() == 200) {
             JSONObject object = JSON.parseObject(this.result.getBody());
-            System.out.println(object);
-            System.out.println("==================================");
             this.setCode(object.getString("code"));
             this.setMessage(object.getString("message"));
+            this.setDataCount(object.getInteger("dataCount"));
+            this.setPageCount(object.getInteger("pageCount"));
             if (object.getString("code").equals("000")){
                 JSONArray dataArray = object.getJSONArray("data");
                 for (int i = 0; i < dataArray.size(); i++) {
@@ -42,17 +48,18 @@ public class ProductPurchaseStorageInInfoResponse extends Response{
                     for (int j = 0; j < entityArray.size(); j++) {
                         Object productPurchaseStorageInInfo = entityArray.get(j);
                         ProductPurchaseStorageInInfo entity = JSON.parseObject(JSON.toJSONString(productPurchaseStorageInInfo), ProductPurchaseStorageInInfo.class);
-                        entity.setPurchaseGroup(purchaseGroup);
+                        entity.setPurchaseGroup(Integer.parseInt(purchaseGroup));
+                        entity.setUpdateTimeEnd(this.updateTimeEnd);
                         entityList.add(entity);
                     }
                 }
             }else{
-                System.out.println("查询结果为：" +object);
                 log.warn("查询结果为：" +object);
+                throw new HttpClientError("查询结果为：" + object);
             }
         } else {
-            System.out.println("请求出错" + result.getCode());
             log.warn("请求出错" + result.getCode());
+            throw new HttpClientError("请求出错" + result.getCode());
         }
     }
 }

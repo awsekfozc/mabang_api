@@ -1,3 +1,5 @@
+package com.smartdo.scc.mabang.JobScheduling.test;
+
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

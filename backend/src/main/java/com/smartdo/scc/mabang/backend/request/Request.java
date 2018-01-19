@@ -2,11 +2,12 @@ package com.smartdo.scc.mabang.backend.request;
 
 import com.smartdo.scc.mabang.backend.exceptions.IncorrectParametersError;
 import com.smartdo.scc.mabang.common.helper.HttpResult;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Map;
-
+@Data
 public abstract class Request {
 
     protected String version = "v2017";

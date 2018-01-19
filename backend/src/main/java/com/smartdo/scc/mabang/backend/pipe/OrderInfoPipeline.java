@@ -26,6 +26,9 @@ public class OrderInfoPipeline implements Pipeline {
                 iOrderInfodao.add(OrderInfo);
             }
             for (OrderItem orderItem : fbaInfoResponse.getOrderItemList()) {
+                //先删除之前的关联数据
+                iOrderItemDao.deleteByPlatformOrderId(orderItem);
+                //在插入新的关联数据
                 iOrderItemDao.add(orderItem);
             }
         } finally {

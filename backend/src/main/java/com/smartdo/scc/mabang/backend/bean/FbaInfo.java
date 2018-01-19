@@ -2,11 +2,13 @@ package com.smartdo.scc.mabang.backend.bean;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * 1.6 企业FBA商品信息
  */
 @Data
-public class FbaInfo {
+public class FbaInfo extends DataEntity{
     private String FNSKU;// 	FNSKU
     private String afnreservedquantity;// 	处理中(res)receiving
     private String afnreservedquantity1;// 	处理中(res)reserved
@@ -41,11 +43,9 @@ public class FbaInfo {
     private String thirtySales;// 30天销售量
     private String title;// 商品标题
     private String weight;// 	单品重量
-
-
-    private String LastsyncTime;// 	最后更新时间
+    private Date LastsyncTime;// 	最后更新时间
     private String shopIds;//	店铺名称，多个已逗号隔开
-    private String openDate;//	上架时间
+    private Date openDate;//	上架时间
     private String yesterdaySales;//	昨日销量
     private String beforeYesterdaySales;//	前天销量
     private String threeDaysAgoSales;//	上前销量
@@ -54,5 +54,6 @@ public class FbaInfo {
     private String Transporttype3;//	快递运输周期
     private String Transporttype4;//	陆运海运运输周期
 
+    private String uniqueId;//	唯一标识符  后期与接口方沟通才添加,对应参数为返回数据中的id （接口文档中可能没有说明）
 
 }
