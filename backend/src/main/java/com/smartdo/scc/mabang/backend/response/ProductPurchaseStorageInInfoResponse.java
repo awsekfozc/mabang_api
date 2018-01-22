@@ -43,12 +43,12 @@ public class ProductPurchaseStorageInInfoResponse extends Response{
                 JSONArray dataArray = object.getJSONArray("data");
                 for (int i = 0; i < dataArray.size(); i++) {
                     JSONObject singeObj=dataArray.getJSONObject(i);
-                    String purchaseGroup = singeObj.getString("purchaseGroup");
+                    Integer purchaseGroup = singeObj.getInteger("purchaseGroup");
                     JSONArray entityArray = singeObj.getJSONArray("PurchaseDetail");
                     for (int j = 0; j < entityArray.size(); j++) {
                         Object productPurchaseStorageInInfo = entityArray.get(j);
                         ProductPurchaseStorageInInfo entity = JSON.parseObject(JSON.toJSONString(productPurchaseStorageInInfo), ProductPurchaseStorageInInfo.class);
-                        entity.setPurchaseGroup(Integer.parseInt(purchaseGroup));
+                        entity.setPurchaseGroup(purchaseGroup);
                         entity.setUpdateTimeEnd(this.updateTimeEnd);
                         entityList.add(entity);
                     }

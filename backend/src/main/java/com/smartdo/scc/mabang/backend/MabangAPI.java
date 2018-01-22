@@ -2,6 +2,7 @@ package com.smartdo.scc.mabang.backend;
 
 
 import com.smartdo.scc.mabang.backend.exceptions.HttpClientError;
+import com.smartdo.scc.mabang.backend.exceptions.IncorrectParametersError;
 import com.smartdo.scc.mabang.backend.exceptions.ResponseTypeError;
 import com.smartdo.scc.mabang.backend.factory.ResponseFactory;
 import com.smartdo.scc.mabang.backend.pipe.Pipeline;
@@ -64,15 +65,11 @@ public  class MabangAPI {
         }
     }
 
-    public void start() {
-        try {
+    public void start() throws IncorrectParametersError,ResponseTypeError,HttpClientError ,Exception{
             sendRequest();
             initResponse();
             System.out.println("start存入数据库");
             pipe();
             System.out.println("end存入数据库");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 }

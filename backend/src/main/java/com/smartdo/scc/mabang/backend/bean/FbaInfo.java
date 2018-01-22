@@ -2,8 +2,6 @@ package com.smartdo.scc.mabang.backend.bean;
 
 import lombok.Data;
 
-import java.util.Date;
-
 /**
  * 1.6 企业FBA商品信息
  */
@@ -43,9 +41,9 @@ public class FbaInfo extends DataEntity{
     private String thirtySales;// 30天销售量
     private String title;// 商品标题
     private String weight;// 	单品重量
-    private Date LastsyncTime;// 	最后更新时间
+    private String LastsyncTime;// 	最后更新时间
     private String shopIds;//	店铺名称，多个已逗号隔开
-    private Date openDate;//	上架时间
+    private String openDate;//	上架时间
     private String yesterdaySales;//	昨日销量
     private String beforeYesterdaySales;//	前天销量
     private String threeDaysAgoSales;//	上前销量

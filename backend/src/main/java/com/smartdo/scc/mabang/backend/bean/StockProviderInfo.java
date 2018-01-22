@@ -2,8 +2,6 @@ package com.smartdo.scc.mabang.backend.bean;
 
 import lombok.Data;
 
-import java.util.Date;
-
 /**
  * 1.4 获取商品供应商信息
  */
@@ -19,7 +17,7 @@ public class StockProviderInfo extends DataEntity {
     private String contactAddress; //	供应商详细地址
 
     private String deleteFlag; // 	状态1、未删除  2、已删除
-    private Date operTime; //	最后更新时间
+    private String operTime; //	最后更新时间
     private String payee; //	收款人
     private String receiveTermId; //	收款方式 1. 转账 2余额宝3网银4支付宝5现款6 paypal
     private String receiveAccount; //	收款账号

@@ -19,6 +19,7 @@ public class StockInfoPipeline implements Pipeline {
         IStockInfoDao dao = DbFactory.getBeanMapper(IStockInfoDao.class, session);
         try {
             for (StockInfo product : productResponse.getStockInfoList()) {
+
                 dao.add(product);
             }
         } finally {

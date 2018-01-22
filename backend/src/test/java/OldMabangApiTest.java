@@ -6,7 +6,7 @@ import org.junit.Test;
 public class OldMabangApiTest {
 
     @Test
-    public void testStockInfoApi() {
+    public void testStockInfoApi() throws Exception {
         StockInfoRequst request = new StockInfoRequst();
         MabangAPI.create(request)
                 .setPipeline(new StockInfoPipeline())
@@ -14,7 +14,7 @@ public class OldMabangApiTest {
     }
 
     @Test
-    public void testStockWarehouseInfoApi() {
+    public void testStockWarehouseInfoApi() throws Exception {
         StockWarehouseInfoRequest request = new StockWarehouseInfoRequest(); // 2 验证
 //        request.setStockIds("1338956,1338991");
         request.setStockIds("1339076,1339076");
@@ -25,7 +25,7 @@ public class OldMabangApiTest {
     }
 
     @Test
-    public void testStockMachiningInfoApi() {
+    public void testStockMachiningInfoApi() throws Exception {
         StockMachiningInfoRequest request = new StockMachiningInfoRequest(); // 3 验证
         request.setStockIds("1338956,1338991"); //有加工信息
         MabangAPI.create(request)
@@ -34,7 +34,7 @@ public class OldMabangApiTest {
     }
 
     @Test
-    public void testStockProviderInfoApi() {
+    public void testStockProviderInfoApi() throws Exception {
         StockProviderInfoRequest request = new StockProviderInfoRequest(); // 4
         MabangAPI.create(request)
                 .setPipeline(new StockProviderInfoPipeline())
@@ -43,18 +43,25 @@ public class OldMabangApiTest {
     }
 
     @Test
-    public void testOrderInfoApi() {
-        OrderInfoRequest request = new OrderInfoRequest(); //5 验证
-        request.setPage(1);
-        request.setTableBase(1);
+    public void testOrderInfoApi() throws Exception {
 
-        MabangAPI.create(request)
-                .setPipeline(new OrderInfoPipeline())
-                .start();
+        OrderInfoRequest request = new OrderInfoRequest(); //5 验证
+
+        //测试时间超时与异常抛出跳出
+        for (int i = 0; i <2 ; i++) {
+            System.out.println(i);
+            request.setTimestemp(1516342738);
+            request.setPage(1);
+            request.setTableBase(1);
+            MabangAPI.create(request)
+                    .setPipeline(new OrderInfoPipeline())
+                    .start();
+
+        }
     }
 
     @Test
-    public void testFbaInfoApi() {
+    public void testFbaInfoApi() throws Exception {
         FbaInfoRequst request = new FbaInfoRequst();   // 6 验证
         request.setPage(1);
 
@@ -64,7 +71,7 @@ public class OldMabangApiTest {
     }
 
     @Test
-    public void testProductPurchaseInfoApi() {
+    public void testProductPurchaseInfoApi() throws Exception {
         ProductPurchaseInfoRequest productPurchaseInfoRequest = new ProductPurchaseInfoRequest(); //7
         productPurchaseInfoRequest.setPage(1);
         MabangAPI.create(productPurchaseInfoRequest)
@@ -73,7 +80,7 @@ public class OldMabangApiTest {
     }
 
     @Test
-    public void testProductPurchaseStorageInInfoApi() {
+    public void testProductPurchaseStorageInInfoApi() throws Exception {
         ProductPurchaseStorageInInfoRequest request = new ProductPurchaseStorageInInfoRequest(); //8
         request.setPurchaseGroups("1100000191");
         MabangAPI.create(request)
@@ -82,7 +89,7 @@ public class OldMabangApiTest {
     }
 
     @Test
-    public void testStockStorageLogApi() {
+    public void testStockStorageLogApi() throws Exception {
         StockStorageLogRequest request = new StockStorageLogRequest(); //9
         MabangAPI.create(request)
                 .setPipeline(new StockStorageLogPipeline())

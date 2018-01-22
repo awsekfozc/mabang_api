@@ -2,17 +2,11 @@ package com.smartdo.scc.mabang.backend.bean;
 
 import lombok.Data;
 
-import java.util.Date;
-
 /**
  * 1.1 商品信息
  */
 @Data
 public class StockInfo extends DataEntity {
-
-
-
-
     private String stockId;//	商品编号
     private String stockSku;//		库存sku
     private String originalSku;//	原始sku
@@ -24,11 +18,11 @@ public class StockInfo extends DataEntity {
     private String categoryId;//	二级商品目录
     private String stockPicture;//		商品图片
     private String remark;//备注
-    private Date timeCreated;//创建时间
-    private Date updateTime;//最后更新时间
+    private String timeCreated;//创建时间
+    private String updateTime;//最后更新时间
     private String salePrice;//售价
-    private Date updateDate1;//最后出库时间
-    private Date updateDate2;//	最后入库时间
+    private String updateDate1;//最后出库时间
+    private String updateDate2;//	最后入库时间
     private String defaultCost;//统一成本价
     private String waitingQuantity;//	未发货量
     private String shippingQuantity;//	在途量
