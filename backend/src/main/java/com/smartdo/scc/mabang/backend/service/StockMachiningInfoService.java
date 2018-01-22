@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StockMachiningInfoService {
+    
     /**
      * 查出stock_info表中的有加工信息的StockId
      * @return

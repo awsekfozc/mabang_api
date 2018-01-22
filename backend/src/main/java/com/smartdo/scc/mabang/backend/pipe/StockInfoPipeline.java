@@ -6,9 +6,12 @@ import com.smartdo.scc.mabang.backend.exceptions.ResponseTypeError;
 import com.smartdo.scc.mabang.backend.factory.DbFactory;
 import com.smartdo.scc.mabang.backend.response.Response;
 import com.smartdo.scc.mabang.backend.response.StockInfoResponse;
+import lombok.Setter;
 import org.apache.ibatis.session.SqlSession;
 
+
 public class StockInfoPipeline implements Pipeline {
+
 
     public void save(Response response) throws ResponseTypeError {
         if (!(response instanceof StockInfoResponse))
@@ -19,7 +22,6 @@ public class StockInfoPipeline implements Pipeline {
         IStockInfoDao dao = DbFactory.getBeanMapper(IStockInfoDao.class, session);
         try {
             for (StockInfo product : productResponse.getStockInfoList()) {
-
                 dao.add(product);
             }
         } finally {

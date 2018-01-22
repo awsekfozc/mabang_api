@@ -6,7 +6,7 @@ import org.junit.Test;
 public class TaskStart {
 
     @Test
-    public void Start() throws Throwable {
+    public void start() throws Throwable {
         //初始化数据库，进行初始数据填充
         MabangApiInit mabangApiInit = new MabangApiInit();
         mabangApiInit.allDBInit();

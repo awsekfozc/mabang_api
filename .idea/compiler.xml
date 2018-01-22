@@ -9,6 +9,7 @@
         <module name="backend" />
         <module name="common" />
         <module name="JobScheduling" />
+        <module name="scheduler" />
         <module name="test-spring-boot" />
       </profile>
     </annotationProcessing>
@@ -17,6 +18,7 @@
       <module name="common" target="1.8" />
       <module name="JobScheduling" target="1.8" />
       <module name="mabang_api" target="1.8" />
+      <module name="scheduler" target="1.8" />
       <module name="test-spring-boot" target="1.8" />
     </bytecodeTargetLevel>
   </component>

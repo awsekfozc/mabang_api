@@ -27,6 +27,7 @@ public class MabangApiInit {
         //拿到所有原始数据（包括：1.无更新区间的数据，2.有更新区间的数据）
         getAllDate();
 
+
         //获取特定更新区间的数据，插入后进行去重
         String dateStr = "1900-01-01 00:00:00";
         Date updateTimeStart = DateUtil.parse(dateStr);

@@ -6,6 +6,7 @@ import com.smartdo.scc.mabang.backend.bean.Scheduling;
 import com.smartdo.scc.mabang.backend.pipe.*;
 import com.smartdo.scc.mabang.backend.request.*;
 import com.smartdo.scc.mabang.backend.service.*;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -17,10 +18,12 @@ import java.util.List;
 /**
  * 定时任务 的Job类
  */
+@Slf4j
 public class MabangApiJob implements Job {
 
     /**
      * 定时任务的方法
+     *
      * @param context
      * @throws JobExecutionException
      */
@@ -28,22 +31,22 @@ public class MabangApiJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         try {
-            System.out.println(new Date());
             SchedulingService schedulingService = new SchedulingService();
-            List list = schedulingService.getUpdateTime();
-            System.out.println(list.size());
+            List<Scheduling> list = schedulingService.getUpdateTime();
             if ((list.size() == 0) || (list == null)) {
-                System.out.println("error");
                 throw new JobExecutionException("获取上次的更新时间失败了，无法开启定时任务！");
             } else {
                 System.out.println("correct");
-                Scheduling scheduling = (Scheduling) list.get(0);
+                Scheduling scheduling = list.get(0);
                 Date updateTimeStart = scheduling.getUpdateTimeEnd();
                 Date updateTimeEnd = DateUtil.date();
-
-
                 //========  1.2, 1.3必须建立在1.1完成的基础上
-                stockInfoApi(updateTimeStart, updateTimeEnd); //1.1
+                boolean status = stockInfoApi(updateTimeStart, updateTimeEnd); //1.1
+                if(status){
+
+                }else{
+
+                }
                 stockWarehouseInfoApi(scheduling);//1.2
                 stockMachiningInfoApi(scheduling);//1.3
 
@@ -72,56 +75,6 @@ public class MabangApiJob implements Job {
 
     }
 
-    /**
-     * 测试用
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-        try {
-            System.out.println(new Date());
-            SchedulingService schedulingService = new SchedulingService();
-            List list = schedulingService.getUpdateTime();
-            System.out.println(list.size());
-            if ((list.size() == 0) || (list == null)) {
-                System.out.println("error");
-                throw new JobExecutionException("获取上次的更新时间失败了，无法开启定时任务！");
-            } else {
-                System.out.println("correct");
-                Scheduling scheduling = (Scheduling) list.get(0);
-                Date updateTimeStart = scheduling.getUpdateTimeEnd();
-                Date updateTimeEnd = DateUtil.date();
-
-                MabangApiJob mAJ = new MabangApiJob();
-
-                //========  1.2, 1.3必须建立在1.1完成的基础上
-                mAJ.stockInfoApi(updateTimeStart, updateTimeEnd); //1.1
-                mAJ.stockWarehouseInfoApi(scheduling);//1.2
-                mAJ.stockMachiningInfoApi(scheduling);//1.3
-
-                mAJ.stockProviderInfoApi(updateTimeStart, updateTimeEnd);//1.4
-                mAJ.orderInfoApi(updateTimeStart, updateTimeEnd);//1.5
-                mAJ.fbaInfoApi(updateTimeStart, updateTimeEnd);//1.6
-                //========= 1.8必须建立在1.7完成的基础上
-                mAJ.productPurchaseInfoApi(updateTimeStart, updateTimeEnd);//1.7
-                mAJ.productPurchaseStorageInInfoApi(scheduling);//1.8
-
-                mAJ.stockStorageLogApi(updateTimeStart, updateTimeEnd);//1.9
-
-                //存入本次更新时间区间
-                scheduling.setUpdateTimeStart(updateTimeStart);
-                scheduling.setUpdateTimeEnd(updateTimeEnd);
-                schedulingService.add(scheduling);
-                System.out.println(scheduling);
-                System.out.println(updateTimeStart);
-                System.out.println(updateTimeEnd);
-                System.out.println("存入本次更新时间区间");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 
     /**
      * 调用stockInfoApi接口
@@ -129,30 +82,34 @@ public class MabangApiJob implements Job {
      * @param updateTimeStart
      * @param updateTimeEnd
      */
-    @Test
-    public void stockInfoApi(Date updateTimeStart, Date updateTimeEnd) throws Exception {  //1.1
-        StockInfoRequst request = new StockInfoRequst();
-        request.setPage(1);
-        request.setUpdateTimeStart(updateTimeStart);
-        request.setUpdateTimeEnd(updateTimeEnd);
-        MabangAPI mabangAPI = new MabangAPI(request);
-        mabangAPI.setPipeline(new StockInfoPipeline());
-        mabangAPI.start();
-        Integer integer = mabangAPI.getResponse().getPageCount();
-        for (int i = 1; i < integer; i++) {
-            request.setPage(i + 1);
+    public boolean stockInfoApi(Date updateTimeStart, Date updateTimeEnd) {  //1.1
+        try {
+            StockInfoRequst request = new StockInfoRequst();
+            request.setPage(1);
+            request.setUpdateTimeStart(updateTimeStart);
+            request.setUpdateTimeEnd(updateTimeEnd);
+            MabangAPI mabangAPI = new MabangAPI(request);
+            mabangAPI.setPipeline(new StockInfoPipeline());
             mabangAPI.start();
+            Integer integer = mabangAPI.getResponse().getPageCount();
+            for (int i = 1; i < integer; i++) {
+                request.setPage(i + 1);
+                mabangAPI.start();
+            }
+            //去重
+            StockInfoService stockInfoService = new StockInfoService();
+            stockInfoService.removeDuplicates();
+        } catch (Exception ex) {
+            log.error("1.1接口增量过程失败", ex);
+            return false;
         }
-        //去重
-        StockInfoService stockInfoService = new StockInfoService();
-        stockInfoService.removeDuplicates();
+        return true;
     }
 
     /**
      * 调用stockWarehouseInfoApi接口
      */
-    @Test
-    public void stockWarehouseInfoApi(Scheduling sheduling) throws Exception{  //1.2
+    public void stockWarehouseInfoApi(Scheduling sheduling){  //1.2
         StockWarehouseInfoService stockWarehouseInfoService = new StockWarehouseInfoService();
         stockWarehouseInfoService.deleteAll(sheduling);
         List<String> resultList = stockWarehouseInfoService.getStockId();
@@ -173,8 +130,7 @@ public class MabangApiJob implements Job {
      *
      * @param sheduling
      */
-    @Test
-    public void stockMachiningInfoApi(Scheduling sheduling) throws Exception{   //1.3
+    public void stockMachiningInfoApi(Scheduling sheduling){
         StockMachiningInfoService stockMachiningInfoService = new StockMachiningInfoService();
         stockMachiningInfoService.deleteAll(sheduling);
         List<String> resultList = stockMachiningInfoService.getStockId();
@@ -193,11 +149,11 @@ public class MabangApiJob implements Job {
 
     /**
      * 调用stockProviderInfoApi接口
+     *
      * @param updateTimeStart
      * @param updateTimeEnd
      */
-    @Test
-    public void stockProviderInfoApi(Date updateTimeStart, Date updateTimeEnd) throws Exception{  //1.4
+    public void stockProviderInfoApi(Date updateTimeStart, Date updateTimeEnd){  //1.4
         StockProviderInfoRequest request = new StockProviderInfoRequest();
         request.setPage(1);
         request.setUpdateTimeStart(updateTimeStart);
@@ -217,11 +173,11 @@ public class MabangApiJob implements Job {
 
     /**
      * 调用orderInfoApi接口
+     *
      * @param updateTimeStart
      * @param updateTimeEnd
      */
-    @Test
-    public void orderInfoApi(Date updateTimeStart, Date updateTimeEnd) throws Exception{  //1.5
+    public void orderInfoApi(Date updateTimeStart, Date updateTimeEnd){  //1.5
 
         OrderInfoRequest request1 = new OrderInfoRequest();
         OrderInfoRequest request2 = new OrderInfoRequest();
@@ -285,11 +241,11 @@ public class MabangApiJob implements Job {
 
     /**
      * 调用fbaInfoApi接口
+     *
      * @param updateTimeStart
      * @param updateTimeEnd
      */
-    @Test
-    public void fbaInfoApi(Date updateTimeStart, Date updateTimeEnd) throws Exception{  //1.6
+    public void fbaInfoApi(Date updateTimeStart, Date updateTimeEnd){  //1.6
         FbaInfoRequst request = new FbaInfoRequst();
         request.setPage(1);
         request.setUpdateTimeStart(updateTimeStart);
@@ -311,11 +267,11 @@ public class MabangApiJob implements Job {
 
     /**
      * 调用productPurchaseInfoApi接口
+     *
      * @param updateTimeStart
      * @param updateTimeEnd
      */
-    @Test
-    public void productPurchaseInfoApi(Date updateTimeStart, Date updateTimeEnd) throws Exception{  //1.7
+    public void productPurchaseInfoApi(Date updateTimeStart, Date updateTimeEnd){  //1.7
 
         ProductPurchaseInfoRequest request = new ProductPurchaseInfoRequest(); //7
         request.setPage(1);
@@ -338,10 +294,10 @@ public class MabangApiJob implements Job {
 
     /**
      * 调用productPurchaseStorageInInfoApi接口
+     *
      * @param sheduling
      */
-    @Test
-    public void productPurchaseStorageInInfoApi(Scheduling sheduling) throws Exception{   //1.8
+    public void productPurchaseStorageInInfoApi(Scheduling sheduling){   //1.8
         ProductPurchaseStorageInInfoService service = new ProductPurchaseStorageInInfoService();
         service.deleteAll(sheduling);
         List<String> resultList = service.getGroupId();
@@ -359,11 +315,11 @@ public class MabangApiJob implements Job {
 
     /**
      * 调用stockStorageLogApi接口
+     *
      * @param updateTimeStart
      * @param updateTimeEnd
      */
-    @Test
-    public void stockStorageLogApi(Date updateTimeStart, Date updateTimeEnd) throws Exception{  //1.9
+    public void stockStorageLogApi(Date updateTimeStart, Date updateTimeEnd){  //1.9
         StockStorageLogRequest request = new StockStorageLogRequest();
         request.setPage(1);
         request.setUpdateTimeStart(updateTimeStart);

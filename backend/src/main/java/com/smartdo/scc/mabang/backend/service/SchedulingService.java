@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import java.util.List;
 
 public class SchedulingService {
+
     /**
      * 查出stock_info表中的有加工信息的StockId
      * @return
