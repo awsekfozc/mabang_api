@@ -9,9 +9,16 @@ import org.apache.ibatis.annotations.Update;
 import java.util.List;
 
 public interface IProductPurchaseStorageInInfoDao {
-    @Insert(" INSERT INTO product_purchase_storage_in_info ( update_time_end,purchase_group, sku, storage_num, damaged_num)" +
-            " VALUES ( #{updateTimeEnd},#{purchaseGroup},#{sku},#{storageNum},#{damagedNum})")
+    @Insert(" INSERT INTO product_purchase_storage_in_info ( purchase_group, sku, storage_num, damaged_num)" +
+            " VALUES ( #{purchaseGroup},#{sku},#{storageNum},#{damagedNum})")
     int add(ProductPurchaseStorageInInfo productPurchaseStorageInInfo);
+
+    @Update(" update product_purchase_storage_in_info set purchase_group =  #{purchaseGroup}, sku = #{sku}, storage_num =#{storageNum} , damaged_num =#{damagedNum} " +
+            " where purchase_group = #{purchaseGroup} and sku = #{sku}")
+    int update(ProductPurchaseStorageInInfo productPurchaseStorageInInfo);
+
+    @Select("SELECT count(*) FROM product_purchase_storage_in_info where purchase_group = #{purchaseGroup} and sku = #{sku}")
+    int IsExist(ProductPurchaseStorageInInfo productPurchaseStorageInInfo);
 
     @Select(" select group_id as groupId from product_purchase_info")
     List<String> getGroupId ();

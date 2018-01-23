@@ -16,4 +16,13 @@ public class StockInfoService {
         session.commit();
         session.close();
     }
+
+
+    public void deleteAll(){
+        SqlSession session = DbFactory.getInstance().openSession();
+        IStockInfoDao dao = DbFactory.getBeanMapper(IStockInfoDao.class, session);
+        dao.deleteAll();
+        session.commit();
+        session.close();
+    }
 }

@@ -34,8 +34,6 @@ public class StockWarehouseInfoRequest extends Request{
             Map map = new HashMap();
             map.put("stockIds",stockIds);
             String Parameters = SplicingParameters(map);
-//            System.out.println(Parameters);
-            System.out.println(super.getPublicUrl() + Parameters);
             return super.getPublicUrl() + Parameters;
         }
     }

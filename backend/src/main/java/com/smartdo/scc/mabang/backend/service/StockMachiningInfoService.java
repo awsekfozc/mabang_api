@@ -1,6 +1,5 @@
 package com.smartdo.scc.mabang.backend.service;
 
-import com.smartdo.scc.mabang.backend.bean.Scheduling;
 import com.smartdo.scc.mabang.backend.dao.IStockMachiningInfoDao;
 import com.smartdo.scc.mabang.backend.factory.DbFactory;
 import org.apache.ibatis.session.SqlSession;
@@ -38,11 +37,4 @@ public class StockMachiningInfoService {
         return stockIdsList;
     }
 
-    public void deleteAll(Scheduling sheduling){
-        SqlSession session = DbFactory.getInstance().openSession();
-        IStockMachiningInfoDao dao = DbFactory.getBeanMapper(IStockMachiningInfoDao.class, session);
-        dao.deleteAll(sheduling);
-        session.commit();
-        session.close();
-    }
 }

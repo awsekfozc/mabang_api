@@ -20,7 +20,11 @@ public class StockMachiningInfoPipeline implements Pipeline {
         IStockMachiningInfoDao dao = DbFactory.getBeanMapper(IStockMachiningInfoDao.class, session);
         try {
             for (StockMachiningInfo stockMachiningInfo : stockMachiningInfoResponse.getStockMachiningInfoList()) {
+                if (dao.IsExist(stockMachiningInfo) > 0) {
+                    dao.update(stockMachiningInfo);
+                } else {
                     dao.add(stockMachiningInfo);
+                }
             }
         } finally {
             session.commit();

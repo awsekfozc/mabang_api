@@ -27,6 +27,7 @@ public class OrderItem extends DataEntity{
     private String unitWeight;   //	单品重量
     private String transactionId;   //	transactionId
 
+    private String orderItemId; //	唯一标识符  后期与接口方沟通才添加,对应参数为返回数据中的id （接口文档中可能没有说明）
 }
 
 

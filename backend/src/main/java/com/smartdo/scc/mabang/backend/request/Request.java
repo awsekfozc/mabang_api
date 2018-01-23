@@ -39,7 +39,6 @@ public abstract class Request {
     }
     protected boolean checkLength(String stockIds){
         String[] stockIdsArry = stockIds.split(",");
-        System.out.println(stockIdsArry.length);
         if (stockIdsArry.length>10){
             return false;
         }else {

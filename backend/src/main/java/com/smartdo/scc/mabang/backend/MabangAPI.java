@@ -65,11 +65,16 @@ public  class MabangAPI {
         }
     }
 
+    /**
+     * 生成Request，发送Request，生成Response,执行持久化
+     * @throws IncorrectParametersError
+     * @throws ResponseTypeError
+     * @throws HttpClientError
+     * @throws Exception
+     */
     public void start() throws IncorrectParametersError,ResponseTypeError,HttpClientError ,Exception{
             sendRequest();
             initResponse();
-            System.out.println("start存入数据库");
             pipe();
-            System.out.println("end存入数据库");
     }
 }

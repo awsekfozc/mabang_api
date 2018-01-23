@@ -22,10 +22,18 @@ public class ProductPurchaseInfoPipeline implements Pipeline {
         IPurchaseDetailDao iPurchaseDetailDao = DbFactory.getBeanMapper(IPurchaseDetailDao.class, session);
         try {
             for (ProductPurchaseInfo productPurchaseInfo : productPurchaseInfoResponse.getProductPurchaseInfoList()) {
-                iProductPurchaseInfoDao.add(productPurchaseInfo);
+                if (iProductPurchaseInfoDao.IsExist(productPurchaseInfo) > 0) {
+                    iProductPurchaseInfoDao.update(productPurchaseInfo);
+                } else {
+                    iProductPurchaseInfoDao.add(productPurchaseInfo);
+                }
             }
             for (PurchaseDetail purchaseDetail : productPurchaseInfoResponse.getPurchaseDetailList()) {
-                iPurchaseDetailDao.add(purchaseDetail);
+                if (iPurchaseDetailDao.IsExist(purchaseDetail) > 0) {
+                    iPurchaseDetailDao.update(purchaseDetail);
+                } else {
+                    iPurchaseDetailDao.add(purchaseDetail);
+                }
             }
         } finally {
             session.commit();

@@ -10,13 +10,13 @@ import java.util.List;
 public class SchedulingService {
 
     /**
-     * 查出stock_info表中的有加工信息的StockId
+     *
      * @return
      */
-    public List<Scheduling> getUpdateTime(){
+    public List<Scheduling> getUpdateTime(Scheduling scheduling){
         SqlSession session = DbFactory.getInstance().openSession();
         ISchedulingDao dao = DbFactory.getBeanMapper(ISchedulingDao.class, session);
-        List list = dao.getUpdateTime();
+        List list = dao.getUpdateTime(scheduling);
         return list;
     }
 

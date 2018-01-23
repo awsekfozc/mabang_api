@@ -22,7 +22,6 @@ public class StockInfoResponse extends Response {
     @Getter
     private List<StockInfo> stockInfoList = new ArrayList<>();
 
-
     public StockInfoResponse(HttpResult result) throws HttpClientError {
         super(result);
         setBeans();

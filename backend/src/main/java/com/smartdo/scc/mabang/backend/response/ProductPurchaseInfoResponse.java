@@ -29,7 +29,6 @@ public class ProductPurchaseInfoResponse extends Response {
     public void setBeans() throws HttpClientError {
         if (result.getCode() == 200) {
             JSONObject object = JSON.parseObject(this.result.getBody());
-            System.out.println(object);
             this.setCode(object.getString("code"));
             this.setMessage(object.getString("message"));
             this.setDataCount(object.getInteger("dataCount"));

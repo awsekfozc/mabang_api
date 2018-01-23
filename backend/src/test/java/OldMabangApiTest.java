@@ -47,10 +47,8 @@ public class OldMabangApiTest {
 
         OrderInfoRequest request = new OrderInfoRequest(); //5 验证
 
-        //测试时间超时与异常抛出跳出
+
         for (int i = 0; i <2 ; i++) {
-            System.out.println(i);
-            request.setTimestemp(1516342738);
             request.setPage(1);
             request.setTableBase(1);
             MabangAPI.create(request)
@@ -82,7 +80,7 @@ public class OldMabangApiTest {
     @Test
     public void testProductPurchaseStorageInInfoApi() throws Exception {
         ProductPurchaseStorageInInfoRequest request = new ProductPurchaseStorageInInfoRequest(); //8
-        request.setPurchaseGroups("1100000191");
+        request.setPurchaseGroups("1100000202");
         MabangAPI.create(request)
                 .setPipeline(new ProductPurchaseStorageInInfoPipeline())
                 .start();

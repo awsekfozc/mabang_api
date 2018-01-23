@@ -21,9 +21,12 @@ public class StockWarehouseInfoPipeline implements Pipeline {
         IStockWarehouseInfoDao dao = DbFactory.getBeanMapper(IStockWarehouseInfoDao.class, session);
         try {
                 for (StockWarehouseInfo stockWarehouseInfo : stockWarehouseInfoResponse.getStockWarehouseInfoList()) {
-                    dao.add(stockWarehouseInfo);
+                    if (dao.IsExist(stockWarehouseInfo) > 0) {
+                        dao.update(stockWarehouseInfo);
+                    } else {
+                        dao.add(stockWarehouseInfo);
+                    }
                 }
-
         } finally {
             session.commit();
             session.close();

@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.smartdo.scc.mabang.backend.bean.ProductPurchaseStorageInInfo;
 import com.smartdo.scc.mabang.backend.exceptions.HttpClientError;
-import com.smartdo.scc.mabang.backend.request.ProductPurchaseStorageInInfoRequest;
 import com.smartdo.scc.mabang.backend.request.Request;
 import com.smartdo.scc.mabang.common.helper.HttpResult;
 import lombok.Getter;
@@ -24,8 +23,6 @@ public class ProductPurchaseStorageInInfoResponse extends Response{
     public ProductPurchaseStorageInInfoResponse(HttpResult result, String purchaseGroups, Request r) throws HttpClientError {
         super(result);
         this.purchaseGroups = purchaseGroups;
-        this.updateTimeStart = ((ProductPurchaseStorageInInfoRequest)r).getUpdateTimeStart();
-        this.updateTimeEnd = ((ProductPurchaseStorageInInfoRequest)r).getUpdateTimeEnd();
         setBeans();
 
     }
@@ -49,7 +46,6 @@ public class ProductPurchaseStorageInInfoResponse extends Response{
                         Object productPurchaseStorageInInfo = entityArray.get(j);
                         ProductPurchaseStorageInInfo entity = JSON.parseObject(JSON.toJSONString(productPurchaseStorageInInfo), ProductPurchaseStorageInInfo.class);
                         entity.setPurchaseGroup(purchaseGroup);
-                        entity.setUpdateTimeEnd(this.updateTimeEnd);
                         entityList.add(entity);
                     }
                 }

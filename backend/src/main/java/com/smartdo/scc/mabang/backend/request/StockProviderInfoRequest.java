@@ -55,8 +55,6 @@ public class StockProviderInfoRequest extends Request {
         }
 
         String Parameters = SplicingParameters(map);
-//        System.out.println(Parameters);
-        System.out.println(super.getPublicUrl() + Parameters);
         return super.getPublicUrl() + Parameters;
     }
 }

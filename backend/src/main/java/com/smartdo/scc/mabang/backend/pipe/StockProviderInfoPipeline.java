@@ -19,7 +19,11 @@ public class StockProviderInfoPipeline implements Pipeline {
         IStockProviderInfoDao dao = DbFactory.getBeanMapper(IStockProviderInfoDao.class, session);
         try {
             for (StockProviderInfo stockProviderInfo : stockProviderInfoResponse.getStockProviderInfoList()) {
-                dao.add(stockProviderInfo);
+                if (dao.IsExist(stockProviderInfo) > 0) {
+                    dao.update(stockProviderInfo);
+                } else {
+                    dao.add(stockProviderInfo);
+                }
             }
         } finally {
             session.commit();

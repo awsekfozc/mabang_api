@@ -19,7 +19,11 @@ public class FbaInfoPipeline implements Pipeline {
         IFbaInfoDao dao = DbFactory.getBeanMapper(IFbaInfoDao.class, session);
         try {
             for (FbaInfo fbaInfo : fbaInfoResponse.getFbaInfoList()) {
+                if (dao.IsExist(fbaInfo) > 0) {
+                    dao.update(fbaInfo);
+                } else {
                     dao.add(fbaInfo);
+                }
             }
         } finally {
             session.commit();

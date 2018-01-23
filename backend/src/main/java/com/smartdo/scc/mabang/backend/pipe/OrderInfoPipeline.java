@@ -22,14 +22,19 @@ public class OrderInfoPipeline implements Pipeline {
         IOrderInfoDao iOrderInfodao = DbFactory.getBeanMapper(IOrderInfoDao.class, session);
         IOrderItemDao iOrderItemDao = DbFactory.getBeanMapper(IOrderItemDao.class, session);
         try {
-            for (OrderInfo OrderInfo : fbaInfoResponse.getOrderInfoList()) {
-                iOrderInfodao.add(OrderInfo);
+            for (OrderInfo orderInfo : fbaInfoResponse.getOrderInfoList()) {
+                if (iOrderInfodao.IsExist(orderInfo) > 0) {
+                    iOrderInfodao.update(orderInfo);
+                } else {
+                    iOrderInfodao.add(orderInfo);
+                }
             }
             for (OrderItem orderItem : fbaInfoResponse.getOrderItemList()) {
-                //先删除之前的关联数据
-                iOrderItemDao.deleteByPlatformOrderId(orderItem);
-                //在插入新的关联数据
-                iOrderItemDao.add(orderItem);
+                if (iOrderItemDao.IsExist(orderItem) > 0) {
+                    iOrderItemDao.update(orderItem);
+                } else {
+                    iOrderItemDao.add(orderItem);
+                }
             }
         } finally {
             session.commit();

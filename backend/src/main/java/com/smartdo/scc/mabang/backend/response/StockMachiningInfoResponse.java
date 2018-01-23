@@ -6,7 +6,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.smartdo.scc.mabang.backend.bean.StockMachiningInfo;
 import com.smartdo.scc.mabang.backend.exceptions.HttpClientError;
 import com.smartdo.scc.mabang.backend.request.Request;
-import com.smartdo.scc.mabang.backend.request.StockMachiningInfoRequest;
 import com.smartdo.scc.mabang.common.helper.HttpResult;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,8 +23,6 @@ public class StockMachiningInfoResponse extends Response {
     public StockMachiningInfoResponse(HttpResult result, String stockIds,Request r) throws HttpClientError {
         super(result);
         this.stockIds = stockIds;
-        this.updateTimeStart = ((StockMachiningInfoRequest)r).getUpdateTimeStart();
-        this.updateTimeEnd = ((StockMachiningInfoRequest)r).getUpdateTimeEnd();
         setBeans();
     }
 
@@ -50,7 +47,6 @@ public class StockMachiningInfoResponse extends Response {
                             for (Object stockMachiningInfo : singleArray) {
                                 StockMachiningInfo entity = JSON.parseObject(JSON.toJSONString(stockMachiningInfo), StockMachiningInfo.class);
                                 entity.setStockIds(stockIdsArry[i]);
-                                entity.setUpdateTimeEnd(this.updateTimeEnd);
                                 stockMachiningInfoList.add(entity);
                             }
                         }

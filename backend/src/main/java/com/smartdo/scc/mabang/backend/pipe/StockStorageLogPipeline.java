@@ -19,7 +19,7 @@ public class StockStorageLogPipeline implements Pipeline {
         IStockStorageLogDao dao = DbFactory.getBeanMapper(IStockStorageLogDao.class, session);
         try {
             for (StockStorageLog stockStorageLog : stockStorageLogResponse.getStockStorageLogList()) {
-                dao.add(stockStorageLog);
+                    dao.add(stockStorageLog);
             }
         } finally {
             session.commit();

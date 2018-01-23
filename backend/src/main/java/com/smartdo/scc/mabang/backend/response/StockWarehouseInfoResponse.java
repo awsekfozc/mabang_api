@@ -7,7 +7,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.smartdo.scc.mabang.backend.bean.StockWarehouseInfo;
 import com.smartdo.scc.mabang.backend.exceptions.HttpClientError;
 import com.smartdo.scc.mabang.backend.request.Request;
-import com.smartdo.scc.mabang.backend.request.StockWarehouseInfoRequest;
 import com.smartdo.scc.mabang.common.helper.HttpResult;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +26,6 @@ public class StockWarehouseInfoResponse extends Response {
     public StockWarehouseInfoResponse(HttpResult result,Request r) throws HttpClientError {
 
         super(result);
-        this.updateTimeStart = ((StockWarehouseInfoRequest)r).getUpdateTimeStart();
-        this.updateTimeEnd = ((StockWarehouseInfoRequest)r).getUpdateTimeEnd();
         setBeans();
     }
 
@@ -45,7 +42,6 @@ public class StockWarehouseInfoResponse extends Response {
                 JSONArray array = object.getJSONArray("data");
                 for(Object stockWarehouseInfo:array){
                     StockWarehouseInfo entity = JSON.parseObject(JSON.toJSONString(stockWarehouseInfo), StockWarehouseInfo.class);
-                    entity.setUpdateTimeEnd(this.updateTimeEnd);
                     stockWarehouseInfoList.add(entity);
                 }
             }else {

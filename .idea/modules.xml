@@ -2,11 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/JobScheduling/JobScheduling.iml" filepath="$PROJECT_DIR$/JobScheduling/JobScheduling.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scheduler/JobScheduling.iml" filepath="$PROJECT_DIR$/scheduler/JobScheduling.iml" />
       <module fileurl="file://$PROJECT_DIR$/backend/backend.iml" filepath="$PROJECT_DIR$/backend/backend.iml" />
       <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
       <module fileurl="file://$PROJECT_DIR$/mabang_api.iml" filepath="$PROJECT_DIR$/mabang_api.iml" />
-      <module fileurl="file://$PROJECT_DIR$/scheduler/scheduler.iml" filepath="$PROJECT_DIR$/scheduler/scheduler.iml" />
       <module fileurl="file://$PROJECT_DIR$/test-spring-boot/test-spring-boot.iml" filepath="$PROJECT_DIR$/test-spring-boot/test-spring-boot.iml" />
     </modules>
   </component>
