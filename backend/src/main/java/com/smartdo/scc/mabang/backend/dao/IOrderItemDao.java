@@ -10,7 +10,7 @@ public interface IOrderItemDao {
             " VALUES (#{orderItemId},#{platformOrderId},#{costPrice},#{isCombo},#{itemId},#{pictureUrl},#{platformQuantity},#{platformSku},#{productUnit},#{quantity},#{sellPrice},#{specifics},#{status},#{stockGrid},#{stockWarehouseId},#{stockSku},#{title},#{unitWeight},#{transactionId})")
     int add(OrderItem orderItem);
 
-    @Update(" update order_item set order_item_id = #{orderItemId},platform_order_id=#{platformOrderId},cost_price=#{costPrice},is_combo=#{isCombo},item_id=#{itemId},picture_url=#{pictureUrl},platform_quantity#{platformQuantity},platform_sku=#{platformSku},product_unit=#{productUnit},quantity=#{quantity},sell_price=#{sellPrice},specifics=#{specifics},status=#{status},stock_grid=#{stockGrid},stock_warehouse_id=#{stockWarehouseId},stock_sku=#{stockSku},title=#{title},unit_weight=#{unitWeight},transaction_id=#{transactionId}" +
+    @Update(" update order_item set order_item_id = #{orderItemId},platform_order_id=#{platformOrderId},cost_price=#{costPrice},is_combo=#{isCombo},item_id=#{itemId},picture_url=#{pictureUrl},platform_quantity = #{platformQuantity},platform_sku=#{platformSku},product_unit=#{productUnit},quantity=#{quantity},sell_price=#{sellPrice},specifics=#{specifics},status=#{status},stock_grid=#{stockGrid},stock_warehouse_id=#{stockWarehouseId},stock_sku=#{stockSku},title=#{title},unit_weight=#{unitWeight},transaction_id=#{transactionId}" +
             " where order_item_id = #{orderItemId} and platform_order_id =  #{platformOrderId}")
     int update(OrderItem orderItem);
 

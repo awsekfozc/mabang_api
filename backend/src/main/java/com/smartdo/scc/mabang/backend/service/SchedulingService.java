@@ -10,27 +10,29 @@ import java.util.List;
 public class SchedulingService {
 
     /**
-     *
      * @return
      */
-    public List<Scheduling> getUpdateTime(Scheduling scheduling){
+    public List<Scheduling> getUpdateTime(Scheduling scheduling) {
         SqlSession session = DbFactory.getInstance().openSession();
         ISchedulingDao dao = DbFactory.getBeanMapper(ISchedulingDao.class, session);
         List list = dao.getUpdateTime(scheduling);
+        session.commit();
+        session.close();
         return list;
+
     }
 
     /**
-     *
      * @return
      */
-    public void add(Scheduling scheduling){
+    public void add(Scheduling scheduling) {
         SqlSession session = DbFactory.getInstance().openSession();
         ISchedulingDao dao = DbFactory.getBeanMapper(ISchedulingDao.class, session);
-        dao.add(scheduling);
-        session.commit();
-        session.close();
-
+        try {
+            dao.add(scheduling);
+        } finally {
+            session.commit();
+            session.close();
+        }
     }
-
 }

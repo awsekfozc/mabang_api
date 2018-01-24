@@ -34,6 +34,8 @@ public class StockWarehouseInfoService {
             }
             j = j + 1;
         }
+        session.commit();
+        session.close();
         return stockIdsList;
     }
 }

@@ -13,7 +13,7 @@ public interface IPurchaseDetailDao {
     @Select("SELECT count(*) FROM purchase_detail where group_id = #{groupId} and stock_sku =  #{stockSku}")
     int IsExist(PurchaseDetail purchaseDetail);
 
-    @Update(" update purchase_detail set group_id = #{groupId},purchase_num = #{purchaseNum},sell_price = #{sellPrice},remark = #{remark},stock_sku = #{stockSku},name_cn = #{nameCN},name_en = #{nameEN},original_sku = #{originalSku},stock_picture = #{stockPicture},weight = #{weight})" +
+    @Update(" update purchase_detail set group_id = #{groupId},purchase_num = #{purchaseNum},sell_price = #{sellPrice},remark = #{remark},stock_sku = #{stockSku},name_cn = #{nameCN},name_en = #{nameEN},original_sku = #{originalSku},stock_picture = #{stockPicture},weight = #{weight}" +
             " where group_id = #{groupId} and stock_sku =  #{stockSku}")
     int update(PurchaseDetail purchaseDetail);
 

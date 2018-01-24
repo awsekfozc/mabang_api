@@ -12,9 +12,9 @@ public class MaBangApiTask {
      * @throws Throwable
      */
     public static void main(String[] args) throws Throwable {
-//        //开启初始化  逻辑一样  纯粹只是怕一小时跑不完，出现重复的情况
-//        MabangApiJob mAJ = new MabangApiJob();
-//        mAJ.firstInit();
+        //开启初始化  逻辑一样  纯粹只是怕一小时跑不完，出现重复的情况
+        MabangApiJob mAJ = new MabangApiJob();
+        mAJ.firstInit();
         //开启定时更新任务
         MaBangApiTask mBAT = new MaBangApiTask();
         mBAT.taskStart();
@@ -32,7 +32,7 @@ public class MaBangApiTask {
         // @NOTICE
         // 例表达式("0 0 0/1 * * ?")的定义是每个时是1的倍数，或者是0的的整点时候，都触发任务
         CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity("trigger1", "group1")
-                .withSchedule(CronScheduleBuilder.cronSchedule("0 0/3 * * * ?")).build();
+                .withSchedule(CronScheduleBuilder.cronSchedule("0 0 0/1 * * ?")).build();
         scheduler.scheduleJob(job, trigger);
         scheduler.start();
     }

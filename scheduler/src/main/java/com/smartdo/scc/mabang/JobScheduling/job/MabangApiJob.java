@@ -47,10 +47,12 @@ public class MabangApiJob implements Job {
         }
     }
 
+    /**
+     * 开启初始化  逻辑一样  纯粹只是怕一小时跑不完，出现重复的情况
+     */
     public void firstInit() {
         try {
             newStockInfoApi();
-
             stockWarehouseInfoApi();
             stockMachiningInfoApi();
             newStockProviderInfoApi();

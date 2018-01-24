@@ -34,6 +34,8 @@ public class ProductPurchaseStorageInInfoService {
             }
             j = j + 1;
         }
+        session.commit();
+        session.close();
         return groupIdList;
     }
 

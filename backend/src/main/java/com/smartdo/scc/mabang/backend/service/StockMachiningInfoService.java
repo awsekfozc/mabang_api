@@ -34,6 +34,8 @@ public class StockMachiningInfoService {
             }
             j = j + 1;
         }
+        session.commit();
+        session.close();
         return stockIdsList;
     }
 
