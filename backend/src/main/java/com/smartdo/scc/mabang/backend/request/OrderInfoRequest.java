@@ -2,6 +2,7 @@ package com.smartdo.scc.mabang.backend.request;
 
 import com.smartdo.scc.mabang.backend.exceptions.IncorrectParametersError;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
@@ -9,7 +10,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @Data
+@Slf4j
 public class OrderInfoRequest extends Request{
 
     private static String orderInfoAction = "get-order-info-data"; //Y
@@ -51,9 +54,8 @@ public class OrderInfoRequest extends Request{
                map.put("updateTimeStart", UpdateTimeStartStr);
                map.put("updateTimeEnd", UpdateTimeEndStr);
            }
-
-
            String Parameters = SplicingParameters(map);
+           log.info(super.getPublicUrl() + Parameters);
            return super.getPublicUrl() + Parameters;
        }
     }

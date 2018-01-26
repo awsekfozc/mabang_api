@@ -2,12 +2,14 @@ package com.smartdo.scc.mabang.backend.request;
 
 import com.smartdo.scc.mabang.backend.exceptions.IncorrectParametersError;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @Data
+@Slf4j
 public class ProductPurchaseStorageInInfoRequest extends Request {
     private static String productPurchaseStorageInInfoAction = "get-product-purchase-storage-in-info-data";
     private String purchaseGroups ;//Y 	采购单号，多个已逗号隔开；最多支持10个
@@ -37,6 +39,7 @@ public class ProductPurchaseStorageInInfoRequest extends Request {
             Map map = new HashMap();
             map.put("purchaseGroups",purchaseGroups);
             String Parameters = SplicingParameters(map);
+            log.info(super.getPublicUrl() + Parameters);
             return super.getPublicUrl() + Parameters;
         }
     }

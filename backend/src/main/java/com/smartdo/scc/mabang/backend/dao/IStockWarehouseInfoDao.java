@@ -1,6 +1,7 @@
 package com.smartdo.scc.mabang.backend.dao;
 
 import com.smartdo.scc.mabang.backend.bean.StockWarehouseInfo;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -19,8 +20,8 @@ public interface IStockWarehouseInfoDao {
             " where stock_id = #{stockId}")
     int update(StockWarehouseInfo sockWarehouseInfo);
 
-
-
+    @Delete("delete from stock_warehouse_info where stock_id = #{stockId}")
+    int delete(StockWarehouseInfo sockWarehouseInfo);
 
     @Select(" select stock_id as stockId from stock_info")
     List<String> getStockId();

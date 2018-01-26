@@ -2,6 +2,7 @@ package com.smartdo.scc.mabang.backend.request;
 
 import com.smartdo.scc.mabang.backend.exceptions.IncorrectParametersError;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Data
+@Slf4j
 public class StockStorageLogRequest extends Request {
     private static String stockStorageLogAction = "get-stock-storage-log-data";// Y get-stock-storage-log-data
     private String stockIds;// N 库存sku 编号，多个已逗号隔开；最多支持10 个
@@ -42,6 +44,7 @@ public class StockStorageLogRequest extends Request {
         }
 
         String Parameters = SplicingParameters(map);
+        log.info(super.getPublicUrl() + Parameters);
         return super.getPublicUrl() + Parameters;
     }
 

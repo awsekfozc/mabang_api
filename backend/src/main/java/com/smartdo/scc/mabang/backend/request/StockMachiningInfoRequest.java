@@ -2,12 +2,14 @@ package com.smartdo.scc.mabang.backend.request;
 
 import com.smartdo.scc.mabang.backend.exceptions.IncorrectParametersError;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @Data
+@Slf4j
 public class StockMachiningInfoRequest extends Request {
     private static String stockMachiningInfoAction = "get-stock-machining-info-data"; //Y 必填参数
     private String stockIds ; // Y 必填参数 	3.0 库存 sku 编号多个已逗号隔开；最对支持 10 个
@@ -37,6 +39,7 @@ public class StockMachiningInfoRequest extends Request {
             Map map = new HashMap();
             map.put("stockIds",stockIds);
             String Parameters = SplicingParameters(map);
+            log.info(super.getPublicUrl() + Parameters);
             return super.getPublicUrl() + Parameters;
         }
     }

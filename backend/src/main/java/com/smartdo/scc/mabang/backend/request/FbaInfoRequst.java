@@ -47,8 +47,8 @@ public class FbaInfoRequst extends Request {
                 map.put("updateTimeStart", UpdateTimeStartStr);
                 map.put("updateTimeEnd", UpdateTimeEndStr);
             }
-
             String Parameters = SplicingParameters(map);
+            log.info(super.getPublicUrl() + Parameters);
             return super.getPublicUrl() + Parameters;
         }
     }

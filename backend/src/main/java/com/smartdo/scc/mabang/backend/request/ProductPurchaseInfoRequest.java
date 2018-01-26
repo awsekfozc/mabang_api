@@ -2,6 +2,7 @@ package com.smartdo.scc.mabang.backend.request;
 
 import com.smartdo.scc.mabang.backend.exceptions.IncorrectParametersError;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
@@ -13,6 +14,7 @@ import java.util.Map;
  * 1.7 获取企业采购商品信息Request
  */
 @Data
+@Slf4j
 public class ProductPurchaseInfoRequest extends Request {
     //Y:必填  N：非必填
     private static String productPurchaseInfoAction = "get-product-purchase-info-data";//Y 	get-product-purchase-info-data
@@ -48,6 +50,7 @@ public class ProductPurchaseInfoRequest extends Request {
             }
 
             String Parameters = SplicingParameters(map);
+            log.info(super.getPublicUrl() + Parameters);
             return super.getPublicUrl() + Parameters;
         }
     }

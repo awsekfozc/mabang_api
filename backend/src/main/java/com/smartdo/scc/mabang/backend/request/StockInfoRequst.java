@@ -1,6 +1,7 @@
 package com.smartdo.scc.mabang.backend.request;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
@@ -12,6 +13,7 @@ import java.util.Map;
  * 获取商品信息请求类
  */
 @Data
+@Slf4j
 public class StockInfoRequst extends Request {
 
     private static String stockInfoAction = "get-stock-info-data";//Y
@@ -46,6 +48,7 @@ public class StockInfoRequst extends Request {
         }
 
         String Parameters = SplicingParameters(map);
+        log.info(super.getPublicUrl() + Parameters);
         return super.getPublicUrl() + Parameters;
     }
 

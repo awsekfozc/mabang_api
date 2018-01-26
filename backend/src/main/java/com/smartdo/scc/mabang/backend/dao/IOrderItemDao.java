@@ -11,9 +11,10 @@ public interface IOrderItemDao {
     int add(OrderItem orderItem);
 
     @Update(" update order_item set order_item_id = #{orderItemId},platform_order_id=#{platformOrderId},cost_price=#{costPrice},is_combo=#{isCombo},item_id=#{itemId},picture_url=#{pictureUrl},platform_quantity = #{platformQuantity},platform_sku=#{platformSku},product_unit=#{productUnit},quantity=#{quantity},sell_price=#{sellPrice},specifics=#{specifics},status=#{status},stock_grid=#{stockGrid},stock_warehouse_id=#{stockWarehouseId},stock_sku=#{stockSku},title=#{title},unit_weight=#{unitWeight},transaction_id=#{transactionId}" +
-            " where order_item_id = #{orderItemId} and platform_order_id =  #{platformOrderId}")
+            " where order_item_id = #{orderItemId} and platform_order_id =  #{platformOrderId} ")
     int update(OrderItem orderItem);
 
+    /*数据库添加了组合索引 ALTER TABLE order_item ADD INDEX index_name (order_item_id ,platform_order_id);*/
     @Select(" SELECT count(*) FROM order_item where order_item_id = #{orderItemId} and platform_order_id =  #{platformOrderId}")
     int IsExist(OrderItem orderItem);
 

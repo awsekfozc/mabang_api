@@ -12,7 +12,9 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 商品响应类
@@ -22,8 +24,10 @@ public class StockWarehouseInfoResponse extends Response {
 
     @Getter
     private List<StockWarehouseInfo> stockWarehouseInfoList = new ArrayList<StockWarehouseInfo>();
+    @Getter
+    private Map<String,List>  resultMap =  new HashMap<>();
 
-    public StockWarehouseInfoResponse(HttpResult result,Request r) throws HttpClientError {
+    public StockWarehouseInfoResponse(HttpResult result, Request r) throws HttpClientError {
 
         super(result);
         setBeans();
@@ -40,9 +44,18 @@ public class StockWarehouseInfoResponse extends Response {
             this.setPageCount(object.getInteger("pageCount"));
             if(object.getString("code").equals("000")){
                 JSONArray array = object.getJSONArray("data");
-                for(Object stockWarehouseInfo:array){
-                    StockWarehouseInfo entity = JSON.parseObject(JSON.toJSONString(stockWarehouseInfo), StockWarehouseInfo.class);
-                    stockWarehouseInfoList.add(entity);
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject jsonObject = array.getJSONObject(i);
+                    StockWarehouseInfo stockWarehouseInfo = JSON.parseObject(JSON.toJSONString(jsonObject), StockWarehouseInfo.class);
+                    String stockId = jsonObject.getString("stockId");
+                    List list = resultMap.get(stockId);
+                    if(list == null){
+                        list = new ArrayList();
+                        list.add(stockWarehouseInfo);
+                    }else{
+                        list.add(stockWarehouseInfo);
+                    }
+                    resultMap.put(stockId,list);
                 }
             }else {
                 log.warn("查询结果为：" +object);

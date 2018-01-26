@@ -9,6 +9,9 @@ import com.smartdo.scc.mabang.backend.response.Response;
 import com.smartdo.scc.mabang.backend.response.StockWarehouseInfoResponse;
 import org.apache.ibatis.session.SqlSession;
 
+import java.util.List;
+import java.util.Map;
+
 public class StockWarehouseInfoPipeline implements Pipeline {
 
     @Override
@@ -20,13 +23,16 @@ public class StockWarehouseInfoPipeline implements Pipeline {
         SqlSession session = DbFactory.getInstance().openSession();
         IStockWarehouseInfoDao dao = DbFactory.getBeanMapper(IStockWarehouseInfoDao.class, session);
         try {
-                for (StockWarehouseInfo stockWarehouseInfo : stockWarehouseInfoResponse.getStockWarehouseInfoList()) {
-                    if (dao.IsExist(stockWarehouseInfo) > 0) {
-                        dao.update(stockWarehouseInfo);
-                    } else {
-                        dao.add(stockWarehouseInfo);
-                    }
+            Map<String,List> map = stockWarehouseInfoResponse.getResultMap();
+            StockWarehouseInfo stockWarehouseInfo = new StockWarehouseInfo();
+            for (Map.Entry<String,List> entry : map.entrySet()) {
+                stockWarehouseInfo.setStockId(entry.getKey());
+                dao.delete(stockWarehouseInfo);
+                for (int i = 0; i < entry.getValue().size(); i++) {
+                    stockWarehouseInfo = (StockWarehouseInfo) entry.getValue().get(i);
+                    dao.add(stockWarehouseInfo);
                 }
+            }
         } finally {
             session.commit();
             session.close();

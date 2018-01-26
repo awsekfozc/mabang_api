@@ -10,6 +10,7 @@ import com.smartdo.scc.mabang.backend.service.SchedulingService;
 import com.smartdo.scc.mabang.backend.service.StockMachiningInfoService;
 import com.smartdo.scc.mabang.backend.service.StockWarehouseInfoService;
 import lombok.extern.slf4j.Slf4j;
+import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -21,6 +22,7 @@ import java.util.List;
  * 定时任务 的Job类
  */
 @Slf4j
+@DisallowConcurrentExecution //禁止并发执行，防止Job运行超时，发生重复
 public class MabangApiJob implements Job {
     /**
      * 定时任务的方法
@@ -48,7 +50,7 @@ public class MabangApiJob implements Job {
     }
 
     /**
-     * 开启初始化  逻辑一样  纯粹只是怕一小时跑不完，出现重复的情况
+     * 开启初始化  逻辑一样  纯粹只是怕一小时跑不完，定时器出现重复的情况
      */
     public void firstInit() {
         try {
@@ -101,24 +103,28 @@ public class MabangApiJob implements Job {
      */
 
     public void newStockInfoApi() {
-        SchedulingService schedulingService = new SchedulingService();
-        Scheduling scheduling = new Scheduling();
-        scheduling.setInterfaceCode("A");
-        Date updateTimeEnd = DateUtil.date();
-        List<Scheduling> list = schedulingService.getUpdateTime(scheduling);
-        if ((list.size() == 0) || (list == null)) {
-            //全量
-            boolean status = stockInfoApi(null, null);
-            scheduling.setUpdateTimeEnd(updateTimeEnd);
-            saveUpdateTime(status, scheduling);
-        } else {
-            //增量
-            scheduling = list.get(0);
-            Date updateTimeStart = scheduling.getUpdateTimeEnd();
-            scheduling.setUpdateTimeStart(updateTimeStart);
-            scheduling.setUpdateTimeEnd(updateTimeEnd);
-            boolean status = stockInfoApi(updateTimeStart, updateTimeEnd); //1.1
-            saveUpdateTime(status, scheduling);
+        try {
+            SchedulingService schedulingService = new SchedulingService();
+            Scheduling scheduling = new Scheduling();
+            scheduling.setInterfaceCode("A");
+            Date updateTimeEnd = DateUtil.date();
+            List<Scheduling> list = schedulingService.getUpdateTime(scheduling);
+            if ((list.size() == 0) || (list == null)) {
+                //全量
+                boolean status = stockInfoApi(null, null);
+                scheduling.setUpdateTimeEnd(updateTimeEnd);
+                saveUpdateTime(status, scheduling);
+            } else {
+                //增量
+                scheduling = list.get(0);
+                Date updateTimeStart = scheduling.getUpdateTimeEnd();
+                scheduling.setUpdateTimeStart(updateTimeStart);
+                scheduling.setUpdateTimeEnd(updateTimeEnd);
+                boolean status = stockInfoApi(updateTimeStart, updateTimeEnd); //1.1
+                saveUpdateTime(status, scheduling);
+            }
+        } catch (Exception ex) {
+            log.error("stockInfo接口更新过程失败", ex);
         }
     }
 
@@ -143,6 +149,11 @@ public class MabangApiJob implements Job {
      * 调用stockWarehouseInfoApi接口
      */
     public boolean stockWarehouseInfoApi() {  //1.2
+        Scheduling scheduling = new Scheduling();
+        scheduling.setInterfaceCode("B");
+        Date updateTimeEnd = DateUtil.date();
+        scheduling.setUpdateTimeEnd(updateTimeEnd);
+
         try {
             StockWarehouseInfoService stockWarehouseInfoService = new StockWarehouseInfoService();
             List<String> resultList = stockWarehouseInfoService.getStockId();
@@ -154,8 +165,10 @@ public class MabangApiJob implements Job {
                         .setPipeline(new StockWarehouseInfoPipeline())
                         .start();
             }
+            saveUpdateTime(true, scheduling);
         } catch (Exception ex) {
             log.error("stockWarehouseInfo接口更新过程失败", ex);
+            saveUpdateTime(false, scheduling);
             return false;
         }
         return true;
@@ -165,6 +178,10 @@ public class MabangApiJob implements Job {
      * 调用stockMachiningInfoApi接口
      */
     public boolean stockMachiningInfoApi() {
+        Scheduling scheduling = new Scheduling();
+        scheduling.setInterfaceCode("C");
+        Date updateTimeEnd = DateUtil.date();
+        scheduling.setUpdateTimeEnd(updateTimeEnd);
         try {
             StockMachiningInfoService stockMachiningInfoService = new StockMachiningInfoService();
             List<String> resultList = stockMachiningInfoService.getStockId();
@@ -175,8 +192,10 @@ public class MabangApiJob implements Job {
                         .setPipeline(new StockMachiningInfoPipeline())
                         .start();
             }
+            saveUpdateTime(true, scheduling);
         } catch (Exception ex) {
             log.error("stockMachiningInfo接口更新过程失败", ex);
+            saveUpdateTime(false, scheduling);
             return false;
         }
         return true;
@@ -215,23 +234,27 @@ public class MabangApiJob implements Job {
      * @return
      */
     public void newStockProviderInfoApi() {  //1.4
-        SchedulingService schedulingService = new SchedulingService();
-        Scheduling scheduling = new Scheduling();
-        scheduling.setInterfaceCode("D");
-        Date updateTimeEnd = DateUtil.date();
-        List<Scheduling> list = schedulingService.getUpdateTime(scheduling);
-        if ((list.size() == 0) || (list == null)) {
-            //全量
-            boolean status = stockProviderInfoApi(null, null);
-            scheduling.setUpdateTimeEnd(updateTimeEnd);
-            saveUpdateTime(status, scheduling);
-        } else {
-            scheduling = list.get(0);
-            Date updateTimeStart = scheduling.getUpdateTimeEnd();
-            scheduling.setUpdateTimeStart(updateTimeStart);
-            scheduling.setUpdateTimeEnd(updateTimeEnd);
-            boolean status = stockProviderInfoApi(updateTimeStart, updateTimeEnd);
-            saveUpdateTime(status, scheduling);
+        try {
+            SchedulingService schedulingService = new SchedulingService();
+            Scheduling scheduling = new Scheduling();
+            scheduling.setInterfaceCode("D");
+            Date updateTimeEnd = DateUtil.date();
+            List<Scheduling> list = schedulingService.getUpdateTime(scheduling);
+            if ((list.size() == 0) || (list == null)) {
+                //全量
+                boolean status = stockProviderInfoApi(null, null);
+                scheduling.setUpdateTimeEnd(updateTimeEnd);
+                saveUpdateTime(status, scheduling);
+            } else {
+                scheduling = list.get(0);
+                Date updateTimeStart = scheduling.getUpdateTimeEnd();
+                scheduling.setUpdateTimeStart(updateTimeStart);
+                scheduling.setUpdateTimeEnd(updateTimeEnd);
+                boolean status = stockProviderInfoApi(updateTimeStart, updateTimeEnd);
+                saveUpdateTime(status, scheduling);
+            }
+        } catch (Exception ex) {
+            log.error("stockProviderInfoApi更新过程失败", ex);
         }
     }
 
@@ -311,24 +334,28 @@ public class MabangApiJob implements Job {
      * @return
      */
     public void newOrderInfoApi() {  //1.5
-        SchedulingService schedulingService = new SchedulingService();
-        Scheduling scheduling = new Scheduling();
-        scheduling.setInterfaceCode("E");
-        Date updateTimeEnd = DateUtil.date();
-        List<Scheduling> list = schedulingService.getUpdateTime(scheduling);
-        if ((list.size() == 0) || (list == null)) {
-            //全量
-            boolean status = orderInfoApi(null, null);
-            scheduling.setUpdateTimeEnd(updateTimeEnd);
-            saveUpdateTime(status, scheduling);
-        } else {
-            scheduling = list.get(0);
-            Date updateTimeStart = scheduling.getUpdateTimeEnd();
-            scheduling.setUpdateTimeStart(updateTimeStart);
-            scheduling.setUpdateTimeEnd(updateTimeEnd);
-            boolean status = orderInfoApi(updateTimeStart, updateTimeEnd);
-            scheduling.setUpdateTimeEnd(updateTimeEnd);
-            saveUpdateTime(status, scheduling);
+        try {
+            SchedulingService schedulingService = new SchedulingService();
+            Scheduling scheduling = new Scheduling();
+            scheduling.setInterfaceCode("E");
+            Date updateTimeEnd = DateUtil.date();
+            List<Scheduling> list = schedulingService.getUpdateTime(scheduling);
+            if ((list.size() == 0) || (list == null)) {
+                //全量
+                boolean status = orderInfoApi(null, null);
+                scheduling.setUpdateTimeEnd(updateTimeEnd);
+                saveUpdateTime(status, scheduling);
+            } else {
+                scheduling = list.get(0);
+                Date updateTimeStart = scheduling.getUpdateTimeEnd();
+                scheduling.setUpdateTimeStart(updateTimeStart);
+                scheduling.setUpdateTimeEnd(updateTimeEnd);
+                boolean status = orderInfoApi(updateTimeStart, updateTimeEnd);
+                scheduling.setUpdateTimeEnd(updateTimeEnd);
+                saveUpdateTime(status, scheduling);
+            }
+        } catch (Exception ex) {
+            log.error("OrderInfo接口更新过程失败", ex);
         }
     }
 
@@ -366,24 +393,27 @@ public class MabangApiJob implements Job {
      * @return
      */
     public void newFbaInfoApi() {  //1.6
-
-        SchedulingService schedulingService = new SchedulingService();
-        Scheduling scheduling = new Scheduling();
-        scheduling.setInterfaceCode("F");
-        Date updateTimeEnd = DateUtil.date();
-        List<Scheduling> list = schedulingService.getUpdateTime(scheduling);
-        if ((list.size() == 0) || (list == null)) {
-            //全量
-            boolean status = fbaInfoApi(null, null);
-            scheduling.setUpdateTimeEnd(updateTimeEnd);
-            saveUpdateTime(status, scheduling);
-        } else {
-            scheduling = list.get(0);
-            Date updateTimeStart = scheduling.getUpdateTimeEnd();
-            scheduling.setUpdateTimeStart(updateTimeStart);
-            scheduling.setUpdateTimeEnd(updateTimeEnd);
-            boolean status = fbaInfoApi(updateTimeStart, updateTimeEnd);
-            saveUpdateTime(status, scheduling);
+        try {
+            SchedulingService schedulingService = new SchedulingService();
+            Scheduling scheduling = new Scheduling();
+            scheduling.setInterfaceCode("F");
+            Date updateTimeEnd = DateUtil.date();
+            List<Scheduling> list = schedulingService.getUpdateTime(scheduling);
+            if ((list.size() == 0) || (list == null)) {
+                //全量
+                boolean status = fbaInfoApi(null, null);
+                scheduling.setUpdateTimeEnd(updateTimeEnd);
+                saveUpdateTime(status, scheduling);
+            } else {
+                scheduling = list.get(0);
+                Date updateTimeStart = scheduling.getUpdateTimeEnd();
+                scheduling.setUpdateTimeStart(updateTimeStart);
+                scheduling.setUpdateTimeEnd(updateTimeEnd);
+                boolean status = fbaInfoApi(updateTimeStart, updateTimeEnd);
+                saveUpdateTime(status, scheduling);
+            }
+        } catch (Exception ex) {
+            log.error("FbaInfo接口更新过程失败", ex);
         }
     }
 
@@ -416,29 +446,32 @@ public class MabangApiJob implements Job {
     }
 
     /**
-     * 取日期，调用FbaInfo接口,存入接口调用信息
+     * 取日期，调用ProductPurchaseInfo接口,存入接口调用信息
      *
      * @return
      */
     public void newProductPurchaseInfoApi() {  //1.7
-
-        SchedulingService schedulingService = new SchedulingService();
-        Scheduling scheduling = new Scheduling();
-        scheduling.setInterfaceCode("G");
-        Date updateTimeEnd = DateUtil.date();
-        List<Scheduling> list = schedulingService.getUpdateTime(scheduling);
-        if ((list.size() == 0) || (list == null)) {
-            //全量
-            boolean status = productPurchaseInfoApi(null, null);
-            scheduling.setUpdateTimeEnd(updateTimeEnd);
-            saveUpdateTime(status, scheduling);
-        } else {
-            scheduling = list.get(0);
-            Date updateTimeStart = scheduling.getUpdateTimeEnd();
-            scheduling.setUpdateTimeStart(updateTimeStart);
-            scheduling.setUpdateTimeEnd(updateTimeEnd);
-            boolean status = productPurchaseInfoApi(updateTimeStart, updateTimeEnd);
-            saveUpdateTime(status, scheduling);
+        try {
+            SchedulingService schedulingService = new SchedulingService();
+            Scheduling scheduling = new Scheduling();
+            scheduling.setInterfaceCode("G");
+            Date updateTimeEnd = DateUtil.date();
+            List<Scheduling> list = schedulingService.getUpdateTime(scheduling);
+            if ((list.size() == 0) || (list == null)) {
+                //全量
+                boolean status = productPurchaseInfoApi(null, null);
+                scheduling.setUpdateTimeEnd(updateTimeEnd);
+                saveUpdateTime(status, scheduling);
+            } else {
+                scheduling = list.get(0);
+                Date updateTimeStart = scheduling.getUpdateTimeEnd();
+                scheduling.setUpdateTimeStart(updateTimeStart);
+                scheduling.setUpdateTimeEnd(updateTimeEnd);
+                boolean status = productPurchaseInfoApi(updateTimeStart, updateTimeEnd);
+                saveUpdateTime(status, scheduling);
+            }
+        } catch (Exception ex) {
+            log.error("调用ProductPurchaseInfo接口更新过程失败", ex);
         }
     }
 
@@ -446,7 +479,10 @@ public class MabangApiJob implements Job {
      * 调用productPurchaseStorageInInfoApi接口
      */
     public boolean productPurchaseStorageInInfoApi() {   //1.8
-
+        Scheduling scheduling = new Scheduling();
+        scheduling.setInterfaceCode("H");
+        Date updateTimeEnd = DateUtil.date();
+        scheduling.setUpdateTimeEnd(updateTimeEnd);
         try {
             ProductPurchaseStorageInInfoService service = new ProductPurchaseStorageInInfoService();
             List<String> resultList = service.getGroupId();
@@ -457,8 +493,10 @@ public class MabangApiJob implements Job {
                         .setPipeline(new ProductPurchaseStorageInInfoPipeline())
                         .start();
             }
+            saveUpdateTime(true, scheduling);
         } catch (Exception ex) {
             log.error("productPurchaseStorageInInfo接口增量过程失败", ex);
+            saveUpdateTime(false, scheduling);
             return false;
         }
         return true;
@@ -498,23 +536,28 @@ public class MabangApiJob implements Job {
      * @return
      */
     public void newStockStorageLogApi() {
-        SchedulingService schedulingService = new SchedulingService();
-        Scheduling scheduling = new Scheduling();
-        scheduling.setInterfaceCode("I");
-        Date updateTimeEnd = DateUtil.date();
-        List<Scheduling> list = schedulingService.getUpdateTime(scheduling);
-        if ((list.size() == 0) || (list == null)) {
-            //全量
-            boolean status = stockStorageLogApi(null, null);
-            scheduling.setUpdateTimeEnd(updateTimeEnd);
-            saveUpdateTime(status, scheduling);
-        } else {
-            scheduling = list.get(0);
-            Date updateTimeStart = scheduling.getUpdateTimeEnd();
-            scheduling.setUpdateTimeStart(updateTimeStart);
-            scheduling.setUpdateTimeEnd(updateTimeEnd);
-            boolean status = stockStorageLogApi(updateTimeStart, updateTimeEnd);
-            saveUpdateTime(status, scheduling);
+        try {
+            SchedulingService schedulingService = new SchedulingService();
+            Scheduling scheduling = new Scheduling();
+            scheduling.setInterfaceCode("I");
+            Date updateTimeEnd = DateUtil.date();
+            List<Scheduling> list = schedulingService.getUpdateTime(scheduling);
+            if ((list.size() == 0) || (list == null)) {
+                //全量
+                boolean status = stockStorageLogApi(null, null);
+                scheduling.setUpdateTimeEnd(updateTimeEnd);
+                saveUpdateTime(status, scheduling);
+            } else {
+                scheduling = list.get(0);
+                Date updateTimeStart = scheduling.getUpdateTimeEnd();
+                scheduling.setUpdateTimeStart(updateTimeStart);
+                scheduling.setUpdateTimeEnd(updateTimeEnd);
+                boolean status = stockStorageLogApi(updateTimeStart, updateTimeEnd);
+                saveUpdateTime(status, scheduling);
+            }
+        } catch (Exception ex) {
+            log.error("调用StockStorageLog接口更新过程失败", ex);
         }
     }
+
 }
