@@ -6,6 +6,7 @@ import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 public class MaBangApiTask {
+
     /**
      * 开启定时更新任务
      * @param args
@@ -24,7 +25,6 @@ public class MaBangApiTask {
      * 开启MabangApiJob的定时任务
      * @throws Throwable
      */
-    @Test
     public void taskStart() throws Throwable {
         SchedulerFactory factory = new StdSchedulerFactory();
         Scheduler scheduler = factory.getScheduler();

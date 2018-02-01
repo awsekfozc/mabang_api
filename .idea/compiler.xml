@@ -10,7 +10,6 @@
         <module name="common" />
         <module name="JobScheduling" />
         <module name="scheduler" />
-        <module name="test-spring-boot" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
