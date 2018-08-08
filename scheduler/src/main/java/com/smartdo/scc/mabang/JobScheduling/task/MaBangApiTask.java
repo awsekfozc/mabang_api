@@ -1,11 +1,23 @@
 package com.smartdo.scc.mabang.JobScheduling.task;
 
 import com.smartdo.scc.mabang.JobScheduling.job.MabangApiJob;
-import org.junit.Test;
+import com.xxl.job.core.biz.model.ReturnT;
+import com.xxl.job.core.handler.IJobHandler;
+import com.xxl.job.core.handler.annotation.JobHandler;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
+import org.springframework.stereotype.Component;
 
-public class MaBangApiTask {
+@JobHandler(value = "mabangCralwer")
+@Component
+public class MaBangApiTask  extends IJobHandler {
+
+
+    @Override
+    public ReturnT<String> execute(String s) throws Exception {
+        new MabangApiJob().execute(null);
+        return SUCCESS;
+    }
 
     /**
      * 开启定时更新任务
@@ -13,12 +25,13 @@ public class MaBangApiTask {
      * @throws Throwable
      */
     public static void main(String[] args) throws Throwable {
-        //开启初始化  逻辑一样  纯粹只是怕一小时跑不完，出现重复的情况
-        MabangApiJob mAJ = new MabangApiJob();
-        mAJ.firstInit();
-        //开启定时更新任务
-        MaBangApiTask mBAT = new MaBangApiTask();
-        mBAT.taskStart();
+        new MabangApiJob().execute(null);
+//        //开启初始化  逻辑一样  纯粹只是怕一小时跑不完，出现重复的情况
+//        MabangApiJob mAJ = new MabangApiJob();
+//        mAJ.firstInit();
+////        //开启定时更新任务
+//        MaBangApiTask mBAT = new MaBangApiTask();
+//        mBAT.taskStart();
     }
 
     /**

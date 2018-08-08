@@ -15,7 +15,7 @@
                 <property name="username" value="root" />
                 <property name="password" value="" />
             </dataSource>-->
-            <!--服务器-->
+            <!--&lt;!&ndash;服务器&ndash;&gt;-->
             <!--<dataSource type="POOLED">-->
                 <!--<property name="driver" value="com.mysql.jdbc.Driver" />-->
                 <!--<property name="url" value="jdbc:mysql://192.168.1.125:3306/mabang?useUnicode=true&amp;characterEncoding=UTF8" />-->
@@ -25,9 +25,9 @@
             <!--生产库-->
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.jdbc.Driver" />
-                <property name="url" value="jdbc:mysql://192.168.1.130:3306/mabang?useUnicode=true&amp;characterEncoding=UTF8" />
-                <property name="username" value="root" />
-                <property name="password" value="amws2017" />
+                <property name="url" value="jdbc:mysql://192.168.2.83:3306/mabang?useUnicode=true&amp;characterEncoding=UTF8" />
+                <property name="username" value="mabang_user" />
+                <property name="password" value="mabangcj" />
             </dataSource>
         </environment>
     </environments>

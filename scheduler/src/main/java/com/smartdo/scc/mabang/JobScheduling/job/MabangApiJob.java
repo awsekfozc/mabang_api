@@ -34,7 +34,6 @@ public class MabangApiJob implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         try {
             newStockInfoApi();
-
             stockWarehouseInfoApi();
             stockMachiningInfoApi();
             newStockProviderInfoApi();
@@ -42,7 +41,6 @@ public class MabangApiJob implements Job {
             newProductPurchaseInfoApi();
             productPurchaseStorageInInfoApi();
             newStockStorageLogApi();
-
             newOrderInfoApi();
         } catch (Exception e) {
             e.printStackTrace();
